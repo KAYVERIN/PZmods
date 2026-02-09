@@ -5,7 +5,7 @@
 -- ====================================================================
 
 -- Включить отладочные сообщения (true) или выключить (false)
-local ENABLE_DEBUG_PRINTS = true
+ENABLE_DEBUG_PRINTS = true
 -- Функция для вывода отладочных сообщений
 function debugPrint(message)
     if ENABLE_DEBUG_PRINTS then
