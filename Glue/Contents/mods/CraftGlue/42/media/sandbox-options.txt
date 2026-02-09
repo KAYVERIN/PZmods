@@ -1,0 +1,68 @@
+VERSION = 1,
+
+
+option ZenFishing.autoBaitEnabled
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_autoBaitEnabled,
+}
+
+option ZenFishing.showBaitNotifications
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_showBaitNotifications,
+}
+
+option ZenFishing.moodSystemEnabled
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_moodSystemEnabled,
+}
+
+option ZenFishing.enableTimeAcceleration
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_enableTimeAcceleration,
+}
+
+option ZenFishing.enableAutoHook
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_enableAutoHook,
+}
+
+option ZenFishing.enableAutoReel
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_enableAutoReel,
+}
+
+option ZenFishing.enableActionSpeedup
+{
+    type = boolean,
+    default = true,
+    page = ZenFishing,
+    translation = ZenFishing_enableActionSpeedup,
+}
+
+option ZenFishing.actionSpeedMultiplier
+{
+    type = double,
+    min = 0.1,
+    default = 3.0,
+    max = 10.0,
+    page = ZenFishing,
+    translation = ZenFishing_actionSpeedMultiplier,
+}
