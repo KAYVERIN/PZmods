@@ -3,9 +3,6 @@
 
 require "ISUI/ISContextMenu"
 
-local function debugPrint(message)
-    print("[PROPAN_CONTEXT] " .. tostring(message))
-end
 
 -- ====================================================================
 -- ФУНКЦИИ ДЛЯ ПРОВЕРКИ ГЕНЕРАТОРА

@@ -3,6 +3,16 @@
 -- Версия: Стабильная (исправленная логика замены по проценту топлива)
 -- Автоматическое восстановление подключения при замене
 -- ====================================================================
+
+-- Включить отладочные сообщения (true) или выключить (false)
+local ENABLE_DEBUG_PRINTS = true
+-- Функция для вывода отладочных сообщений
+function debugPrint(message)
+    if ENABLE_DEBUG_PRINTS then
+        print("[PROPAN_MOD] " .. tostring(message))
+    end
+end
+
 require "TimedActions/ISBaseTimedAction"
 require "PropaneGeneratorUtils"
 require "PropaneGeneratorContext"  
@@ -24,8 +34,7 @@ local PROPANE_MIN_TO_KEEP = 0.70  -- 70%
 -- Минимальный уровень в баллоне для проверки "пустоты"
 local EMPTY_TANK_THRESHOLD = 0.001
 
--- Включить отладочные сообщения (true) или выключить (false)
-local ENABLE_DEBUG_PRINTS = true
+
 
 -- Названия типов предметов (должны совпадать с items.txt)
 local GENERATOR_OLD = "Generator_Old"
@@ -35,12 +44,7 @@ local GENERATOR_PROPANE = "Generator_Old_Propane"
 -- РАЗДЕЛ 2: ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 -- ====================================================================
 
--- Функция для вывода отладочных сообщений
-local function debugPrint(message)
-    if ENABLE_DEBUG_PRINTS then
-        print("[PROPAN_MOD] " .. tostring(message))
-    end
-end
+
 
 debugPrint("Zagruzka skripta PropaneGeneratorMod.lua...")
 
