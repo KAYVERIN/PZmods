@@ -1,6 +1,0 @@
-ContextMenu_RU = {
-    ContextMenu_RemoveWasherHoseRemoveHose = "Снять шланг",
-    ContextMenu_RemoveWasherHoseHoseRemoved = "Шланг снят",
-    ContextMenu_RemoveWasherHoseInstallHose = "Установить шланг",
-	ContextMenu_DigWormsAction = "Копать червей",
-}

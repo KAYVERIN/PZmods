@@ -1,6 +1,0 @@
-ContextMenu_EN = {
-    ContextMenu_RemoveWasherHoseRemoveHose = "Remove hose",
-    ContextMenu_RemoveWasherHoseHoseRemoved = "Hose removed",
-    ContextMenu_RemoveWasherHoseInstallHose = "Install hose",
-	ContextMenu_DigWormsAction = "Dig Worms",
-}
