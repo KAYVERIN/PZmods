@@ -1,0 +1,544 @@
+module Base
+{
+/* клей */
+	craftRecipe CraftGlue
+	{
+		time = 100,
+		tags = InHandCraft;CanBeDoneInDark;Cooking;CanBeDoneFromFloor,
+		category = Cooking,
+        xpAward = Cooking:3,
+		timedAction = ScrubClothWithSoap,
+		OnTest = RecipeCodeOnTest.hotFluidContainer,
+        Tooltip = Tooltip_needsToBeHot,
+
+		inputs
+		{
+			item 5 [Base.SmallAnimalBone],
+			item 1 [*] mode:keep,
+            -fluid 1 [Water],
+		}
+
+		outputs
+		{
+			item 1 Base.Glue,
+		}
+	}
+/* шланг */
+	craftRecipe CraftRubberHose
+	{
+		time = 300,
+		tags = AnySurfaceCraft,
+		category = Tailoring,
+        xpAward = Tailoring:3,
+		timedAction = SewingCloth,
+
+		inputs
+		{
+			item 1 [Base.LongStick] mode:keep flags[Prop1],
+			item 1 tags[base:scissors;base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull;MayDegradeLight],			
+			item 1 tags[base:awl] mode:keep flags[MayDegradeLight],
+			item 2 [Base.Leather_Crude_Medium_Tan],
+			item 5 tags[base:thread],
+			item 5 [Base.Glue],
+		}
+
+		outputs
+		{
+			item 1 Base.RubberHose,
+		}
+	}
+/* скотч */
+	craftRecipe CraftScotchtape
+	{
+		time = 100,
+		tags = AnySurfaceCraft,
+		timedAction = Making,
+
+		inputs
+		{
+			item 1 tags[base:scissors;base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull;MayDegradeLight],	
+			item 1 [Base.Garbagebag;Base.GroceryBag1;Base.GroceryBag2;Base.GroceryBag3;Base.GroceryBag4;Base.GroceryBag5;Base.Plasticbag] mode:destroy,
+			item 5 [Base.Glue],
+		}
+
+		outputs
+		{
+			item 1 Base.Scotchtape,
+		}
+	}
+/* сварочные очки */
+	craftRecipe CraftOldWeldingGoggles
+	{
+		timedAction = Making,
+        time = 150,
+        Tags = InHandCraft;CanBeDoneInDark,
+		category = Miscellaneous,
+
+		inputs
+		{
+			item 1 [Base.Glasses_Aviators;Base.Glasses_Normal;Base.Glasses;Base.Glasses_Shooting;Base.Glasses_Sun] mode:destroy,
+			item 1 tags[StartFire],
+			item 1 [Base.Candle;Base.TirePiece] mode:destroy flags[ItemCount] ,
+		}
+
+		outputs
+		{
+			item 1 Base.Glasses_OldWeldingGoggles,
+		}
+	}
+/* свеча */	
+	craftRecipe CraftCandle
+	{
+        time = 15,
+        Tags = AnySurfaceCraft,
+		category = Miscellaneous,
+		timedAction = Making,
+
+		inputs
+		{
+			item 2 [Base.Lard] mode:destroy,
+			item 1 [Base.Twine],
+		}
+
+		outputs
+		{
+			item 1 Base.Candle,
+		}
+	}
+/* сало и бекон */	
+	craftRecipe CraftLardAndBacon
+	{
+		timedAction = MixingBowl,
+		time = 200,
+		Tags = InHandCraft;Cooking,
+		category = Cooking,
+		xpAward = Cooking:3,
+
+		inputs
+		{
+			item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[SharpnessCheck],
+			item 1 [Base.PanForged;Base.Pan;Base.Saucepan;Base.SaucepanCopper;Base.Pot;Base.PotForged] mode:keep,
+			item 3 [Base.Pork;Base.Venison;Base.Beef]  flags[ItemCount],      
+		}
+
+		outputs
+		{
+			item 1 Base.Lard,
+			item 2 Base.Bacon,			
+		}	
+
+	}
+/* изолента */	
+	craftRecipe CraftDuctTape
+	{
+		time = 100,
+		tags = AnySurfaceCraft,
+		timedAction = Making,
+
+		inputs
+		{
+			item 1 tags[base:scissors;base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull;MayDegradeLight],	
+			item 5 [Base.RippedSheets;Base.DenimStrips;Base.LeatherStrips] mode:destroy,
+			item 5 [Base.Glue],
+		}
+
+		outputs
+		{
+			item 1 Base.DuctTape,
+		}
+	}
+/* клей по дереву */	
+	craftRecipe CraftWoodglue
+	{
+		time = 100,
+		tags = InHandCraft;CanBeDoneInDark;CanBeDoneFromFloor,
+		category = Cooking,
+        xpAward = Cooking:3,
+		timedAction = ScrubClothWithSoap,
+		OnTest = RecipeCodeOnTest.hotFluidContainer,
+        Tooltip = Tooltip_needsToBeHot,
+
+		inputs
+		{
+			item 5 [Base.SmallAnimalBone] mode:destroy,
+			item 2 [Base.Quicklime] mode:destroy,
+			item 1 [*] mode:keep,
+            -fluid 1 [Water],
+		}
+
+		outputs
+		{
+			item 1 Base.Woodglue,
+		}
+	}
+/* ножовочное полотно */
+	craftRecipe CraftHacksawBlade
+    {
+        time = 400,
+        SkillRequired = Blacksmith:7,
+        NeedToBeLearn = true,
+        timedAction = MakingHammer_Surface,
+        xpAward = Blacksmith:45,
+        AutoLearnAll = Blacksmith:7,
+        Tags = AdvancedForge,
+        category = Blacksmithing,
+        inputs
+        {
+            item 4 tags[base:charcoal],
+            item 1 [Base.SteelBarHalf;Base.Katana;Base.Katana_Blade],
+            item 1 tags[base:smithinghammer] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:tongs;base:metalworkingpliers] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:metalworkingchisel] mode:keep flags[MayDegradeLight],
+			item 1 [Base.SmallPunchSet] mode:keep flags[MayDegradeLight],
+            item 1 [Base.SmallFileSet] mode:keep flags[MayDegradeLight],
+        }
+        outputs
+        {
+            item 1 Base.HacksawBlade,
+        }
+    }
+/* ножовка */	
+	craftRecipe CraftSaw
+    {
+        time = 800,
+        SkillRequired = Blacksmith:7,
+        NeedToBeLearn = true,
+        timedAction = MakingHammer_Surface,
+        xpAward = Blacksmith:45,
+        AutoLearnAll = Blacksmith:7,
+        Tags = AdvancedForge,
+        category = Tools,
+        inputs
+        {
+            item 4 tags[base:charcoal],
+            item 2 [Base.IronBarHalf;Base.MetalPipe],
+            item 1 tags[base:smithinghammer] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:tongs;base:metalworkingpliers] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:metalworkingchisel] mode:keep flags[MayDegradeLight],
+			item 1 [Base.SmallPunchSet] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:file] mode:keep flags[MayDegradeLight],
+			item 1 [Base.Handle],
+			item 1 [Base.HacksawBlade],
+			item 4 [Base.NutsBolts],			
+        }
+        outputs
+        {
+            item 1 Base.Saw,
+        }
+    }
+/* гайки и болты */	
+	craftRecipe CraftNutsBolts
+    {
+        time = 400,
+        SkillRequired = Blacksmith:4,
+        NeedToBeLearn = true,
+        timedAction = MakingHammer_Surface,
+        xpAward = Blacksmith:5,
+        AutoLearnAll = Blacksmith:4,
+        Tags = AdvancedForge,
+        category = Blacksmithing,
+        inputs
+        {
+            item 4 tags[base:charcoal], 
+			item 1 tags[base:tongs;base:metalworkingpliers] mode:keep flags[MayDegradeLight],			
+            item 1 tags[base:smithinghammer] mode:keep flags[MayDegradeLight],
+			item 4 [Base.PiercedSteelChunk],
+			item 4 [Base.Screws],
+			item 1 [Base.OldDrill;Base.HandDrill] mode:keep flags[MayDegradeLight],
+            item 1 [Base.SmallFileSet] mode:keep flags[MayDegradeLight],
+        }
+        outputs
+        {
+            item 4 Base.NutsBolts,
+        }
+    }
+/* Выковать винты */	
+	craftRecipe CraftScrews
+    {
+        time = 200,
+        SkillRequired = Blacksmith:4,
+        NeedToBeLearn = true,
+        timedAction = MakingHammer_Surface,
+        xpAward = Blacksmith:5,
+        AutoLearnAll = Blacksmith:4,
+        Tags = Forge,
+        category = Blacksmithing,
+        inputs
+        {
+            item 4 tags[base:charcoal],
+			item 1 tags[base:tongs;base:metalworkingpliers] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:smithinghammer] mode:keep flags[MayDegradeLight],
+			item 5 [Base.SteelChunk;Base.IronChunk],
+			item 1 tags[base:metalworkingchisel] mode:keep flags[MayDegradeLight],
+        }
+        outputs
+        {
+            item 10 Base.Screws,
+        }
+    }
+/* газовый ключ (упрощенный со сваркой)
+	craftRecipe CraftPipeWrenchSimple
+	{
+		time = 300,
+		tags = AnySurfaceCraft,
+		category = Metalworking,
+		timedAction = DismantleElectrical,
+		SkillRequired = MetalWelding:3,
+		xpAward = MetalWelding:25,
+
+		inputs
+		{
+			item 2 [Base.MetalPipe] flags[NoBrokenItems],
+			item 1 [Base.LongSteelPipe] flags[NoBrokenItems],
+			item 4 [Base.NutsBolts],
+			item 1 [Base.BlowTorch] mode:keep,
+			item 1 tags[base:weldingmask] mode:keep,
+			item 1 tags[base:wrench] mode:keep flags[MayDegradeLight],
+			item 1 [Base.SheetMetalSnips] mode:keep flags[MayDegradeVeryLight],
+		}
+
+		outputs
+		{
+			item 1 Base.PipeWrench,
+		}
+	} */
+/* Изготовление генератора */
+	craftRecipe CraftGenerator
+	{
+		time = 500,
+		tags = AnySurfaceCraft,
+		timedAction = DismantleElectrical,
+		category = Electrical,
+		AutoLearnAny = Electricity:9,
+        xpAward = Electricity:200,
+		SkillRequired = Electricity:9;MetalWelding:1;Mechanics:8,
+
+		inputs
+		{
+			item 10 [Base.Scotchtape], /* скотч */
+			item 4 [Base.ElectricWire] flags[NoBrokenItems],/* 4 провода(изолированые) */
+			item 10 [Base.ElectronicsScrap] flags[NoBrokenItems],/* печатные платы */
+			item 8 [Base.MetalPipe] flags[NoBrokenItems],/* 8 железных трубы */
+			item 10 [Base.BlowTorch],/* сварочная горелка */
+			item 1 tags[base:weldingmask] mode:keep,/* сварочная маска */
+			item 15 [Base.NutsBolts],/* 15 гайки и болты */
+			item 1 tags[base:screwdriver] mode:keep flags[MayDegradeVeryLight;Prop1],/* отвертка */
+			item 1 [Base.PetrolCan] mode:destroy,/* канистра */
+			item 20 [Base.EngineParts],/* 20 запчасти двигателя */
+			item 1 tags[base:wrench] mode:keep flags[MayDegradeLight],/* гаечный ключ */
+			item 2 [Base.SheetMetal],/* 2 листа металла */
+		}
+
+		outputs
+		{
+			item 1 Base.Generator,
+		}
+	}
+/* воронка */
+	craftRecipe CraftFunnel
+	{
+		timedAction = Making,
+        time = 40,
+        Tags = InHandCraft;CanBeDoneInDark,
+		category = Miscellaneous,
+
+		inputs
+		{
+			item 1 [Base.WaterBottle] mode:destroy,
+			item 1 tags[base:scissors;base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull;MayDegradeLight],
+		}
+
+		outputs
+		{
+			item 1 Base.Funnel,
+		}
+	}
+/* Изготовление сварочной маски */
+		craftRecipe CraftWeldingMask
+	{
+		timedAction = Making,
+        time = 200,
+        Tags = AnySurfaceCraft,
+		category = Tailoring,
+		SkillRequired = Tailoring:2,
+		xpAward = Tailoring:20,
+		
+		inputs
+		{
+			item 2 [Base.Buckle] mode:destroy,/* 2 пряжки */
+			item 1 [Base.Glasses_OldWeldingGoggles] mode:destroy,/* старые сварочные очки */
+			item 2 [Base.LeatherStrips] mode:destroy,/* 2 полоски кожи */
+			item 2 [Base.NutsBolts] mode:destroy,/* 2 гайки и болты */
+			item 1 tags[base:scissors] mode:keep flags[IsNotDull;MayDegradeLight],/* ножници */
+			item 1 [Base.Leather_Crude_Small_Tan] mode:destroy,/* 1 маленькая кожа */
+			item 4 [Base.Thread_Aramid;Base.Thread_Sinew] mode:destroy,/* 4 армированая нить */
+			item 1 tags[base:awl] mode:keep flags[MayDegradeLight],/* шило */
+		}
+
+		outputs
+		{
+			item 1 Base.WeldingMask,
+		}
+	}
+/* пуско-зарядное устройство */
+	craftRecipe CraftCarBatteryCharger
+	{
+		time = 500,
+		tags = AnySurfaceCraft,
+		timedAction = DismantleElectrical,
+		category = Electrical,
+		AutoLearnAny = Electricity:7,
+        xpAward = Electricity:200,
+		SkillRequired = Electricity:7,
+
+		inputs
+		{
+			item 10 [Base.DuctTape], /* изолента синяя, без неё в апокалисисе жопа */
+			item 4 [Base.ElectricWire] flags[NoBrokenItems],/* 4 провода(изолированые) */
+			item 10 [Base.ElectronicsScrap] flags[NoBrokenItems],/* печатные платы */
+			item 8 [Base.NutsBolts],/* 8 гайки и болты */
+			item 1 tags[base:screwdriver] mode:keep flags[MayDegradeVeryLight;Prop1],/* отвертка */
+			item 2 [Base.SheetMetal],/* 2 листа металла */	
+			item 1 [Base.SheetMetalSnips] mode:keep flags[MayDegradeVeryLight],/* ножници по металлу */
+			item 1 tags[base:pliers] mode:keep flags[MayDegradeVeryLight],/* пасатижи */
+		}
+
+		outputs
+		{
+			item 1 Base.CarBatteryCharger,
+		}
+	}
+
+/* === НОВЫЕ РЕЦЕПТЫ ДЛЯ КАНИСТР И ЁМКОСТЕЙ === */
+
+/* ----------------------------------------------------------------------
+   РЕЦЕПТ 1: Одноразовый топливный мешок из пакетов 
+-------------------------------------------------------------------------*/
+/* craftRecipe CraftMakeshiftFuelBag
+{
+    time = 60,
+    tags = InHandCraft;CanBeDoneInDark,
+    category = Survival,
+    timedAction = Making,
+
+    inputs
+    {
+        item 2 [Base.Garbagebag] mode:destroy,
+        item 1 [Base.SheetRope;Base.Rope;Base.Twine] mode:destroy,
+        item 1 [Base.Bag_Schoolbag;Base.Bag_Satchel;Base.Bag_NormalHikingBag] mode:destroy,
+    }
+    outputs
+    {
+        item 1 Base.Bag_BackpackCan, // НОВЫЙ ПРЕДМЕТ
+    }
+} */
+
+
+/* ----------------------------------------------------------------------
+   РЕЦЕПТ 2: Надёжная канистра (для мастера, навык 6+)
+   АКТИВЕН. Использует существующий предмет Base.PetrolCan.
+------------------------------------------------------------------------- 
+craftRecipe CraftPetrolCan_Master
+{
+    time = 600,
+    tags = AnySurfaceCraft,
+    category = Metalworking,
+    SkillRequired = MetalWelding:6,
+    xpAward = MetalWelding:50,
+    timedAction = DismantleElectrical,
+    NeedToBeLearn = true,
+
+    inputs
+    {
+        item 3 [Base.SheetMetal],
+        item 1 [Base.BlowTorch] mode:keep,
+        item 1 tags[base:weldingmask] mode:keep,
+        item 1 [Base.SheetMetalSnips] mode:keep flags[MayDegradeVeryLight],
+        item 8 [Base.NutsBolts],
+        item 1 [Base.Funnel] mode:destroy,
+        item 2 [Base.RubberBand] mode:destroy,
+        item 1 [Base.DuctTape],
+        item 5 [Base.Glue],
+    }
+    outputs
+    {
+        item 1 Base.PetrolCan, // Стандартный предмет из игры
+    }
+}*/
+
+/* ----------------------------------------------------------------------
+   РЕЦЕПТ 3: Переделка термоса/холодильника (ТРЕБУЕТ НОВОГО ПРЕДМЕТА)
+   Полностью закомментирован, чтобы не вызывать ошибок.
+   Для активации создайте предмет Base.FuelContainerMakeshift.
+-------------------------------------------------------------------------
+craftRecipe ConvertCoolerToFuel
+{
+    time = 120,
+    tags = InHandCraft,
+    category = Survival,
+    timedAction = Making,
+
+    inputs
+    {
+        item 1 [Base.Cooler;Base.Thermos] mode:destroy,
+        item 1 [Base.Funnel] mode:destroy,
+        item 1 [Base.RubberBand] mode:destroy,
+        item 2 [Base.Scotchtape],
+    }
+    outputs
+    {
+        item 1 Base.FuelContainerMakeshift, // НОВЫЙ ПРЕДМЕТ: нужно создать
+    }
+}
+*/
+	craftRecipe CraftNailFromWire
+		{
+			time = 20,
+			tags = InHandCraft;CanBeDoneInDark,
+			category = Metalworking, 
+			timedAction = MakingHammer_Surface,
+			xpAward = Metalworking:2, 
+
+		inputs
+			{
+				
+				item 4 [Base.Wire],
+				item 1 tags[base:hammer;base:clubhammer;base:mallet] mode:keep flags[Prop1;MayDegradeLight],
+			}
+
+		outputs
+			{
+				item 1 Base.Nails,
+			}
+	}
+	/* песок из гравия через простыню */
+	craftRecipe CraftSandFromGravel
+	{
+		time = 120,
+		tags = InHandCraft;CanBeDoneInDark,
+		category = Miscellaneous,
+		timedAction = Making,
+		xpAward = Survival:2,
+
+		inputs
+		{
+			item 16 [Base.Gravelbag] mode:destroy,
+			item 1 [Base.Sheet] mode:destroy,
+			item 1 [Base.Bucket;Base.BucketEmpty;Base.BucketWaterDebug;Base.BucketCarved] mode:keep,
+		}
+
+		outputs
+		{
+			item 1 Base.Sandbag,
+			item 4 Base.FlintNodule,
+			item 1 Base.RippedSheetsDirty,
+			item 3 Base.EmptySandbag,
+		}
+	}
+/* разбор аккумов */
+/* трубы */
+/* горелка */
+/* железная бита */	
+/* разбор банок(алюм) */
+			
+}

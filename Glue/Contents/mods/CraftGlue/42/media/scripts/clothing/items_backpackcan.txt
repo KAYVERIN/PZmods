@@ -1,0 +1,44 @@
+module Base
+{
+    item Bag_BackpackCan
+    {
+		DisplayName = Backpack Can,
+        DisplayCategory = Bag,
+        ItemType = base:container,
+        Weight = 2.5,
+        IconsForTexture = Backpack_Black,
+        AttachmentReplacement = Bag,
+        BloodLocation = Bag,
+        CanBeEquipped = base:back,
+        Capacity = 5,
+        CloseSound = CloseHydrationPack,
+        ClothingItem = Bag_BackpackCan,
+        EquipSound = EquipBackpackLarge,
+        OpenSound = OpenHydrationPack,
+        PutInSound = StoreItemHydrationPack,
+        ReplaceInPrimaryHand = Bag_HydrationBackpack_RHand holdingbagright,
+        ReplaceInSecondHand = Bag_HydrationBackpack_LHand holdingbagleft,
+        RunSpeedModifier = 0.94,
+        CombatSpeedModifier = 0.90,
+        SoundParameter = EquippedBaggageContainer SchoolBag,
+        WeightReduction = 60,
+        WorldStaticModel = SchoolBag_Ground,
+        Tags = WaterContainer;Backpack;CanStoreWater;CanStoreFuel;HasMetal,
+        
+        component FluidContainer
+        {
+            ContainerName = BackpackCan,
+            Capacity = 50.0,
+            InitialPercentMin = 0.0,
+            InitialPercentMax = 0.0,
+            Fluids
+            {
+                fluid = Water:1.0,
+                fluid = DirtyWater:1.0,
+                fluid = Gasoline:0.75,
+                fluid = Diesel:0.85,
+            }
+        }
+    }
+
+}
