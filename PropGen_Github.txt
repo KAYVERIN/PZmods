@@ -2,6 +2,8 @@ https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerat
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/client/PropaneGeneratorMod.lua
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/client/PropaneGeneratorUI.lua
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/client/PropaneGeneratorUtils.lua
+https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/scripts/items_PropaneGenerator.txt
+
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/EN/ContextMenu_EN.txt
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/EN/Tooltip_EN.txt
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/EN/UI_EN.txt
@@ -9,7 +11,6 @@ https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerat
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/RU/Recipes_RU.txt
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/RU/Tooltip_RU.txt
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/lua/shared/Translate/RU/UI_RU.txt
-https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/media/scripts/items_PropaneGenerator.txt
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/Contents/mods/PropaneGenerator/42/mod.info
 https://raw.githubusercontent.com/KAYVERIN/PZmods/refs/heads/main/PropaneGenerator/workshop.txt
 
