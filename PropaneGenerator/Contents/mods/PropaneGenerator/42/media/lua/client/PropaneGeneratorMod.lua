@@ -409,7 +409,9 @@ function onAddPropaneToGenerator(worldobjects, generator, player)
 
 
     -- Берем балон
-    if not ensurePropaneTankInHands(playerObj) then 
+	local propaneTank = ensurePropaneTankInHands(playerObj)
+    if not propaneTank then 
+		debugPrint("Deistvie zapravki NE dobavleno v ochered")
 		return
 	end
 
