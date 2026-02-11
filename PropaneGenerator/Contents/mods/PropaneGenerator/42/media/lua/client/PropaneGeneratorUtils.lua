@@ -31,7 +31,9 @@ function PropaneGenerator.calculateFuelTransfer(generator, propaneTank)
     
     local currentFuel = generator:getFuel()
     local maxFuel = generator:getMaxFuel()
-    local tankPercent = propaneTank:getUsedDelta() or 1.0
+    llocal currentUses = self.propaneTank:getCurrentUses()
+	local maxUses = self.propaneTank:getMaxUses()
+	local tankPercent = currentUses / maxUses
     
     local availableFuel = tankPercent * PropaneGenerator.config.FUEL_PER_FULL_TANK
     local freeSpace = maxFuel - currentFuel
@@ -51,5 +53,7 @@ function PropaneGenerator.getTooltipText(generator)
     
     return text
 end
+
+
 
 debugPrint("PropaneGeneratorUtils.lua zagruzhen")

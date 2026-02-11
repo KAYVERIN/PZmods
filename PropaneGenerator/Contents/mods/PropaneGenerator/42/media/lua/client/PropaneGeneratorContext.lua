@@ -45,57 +45,51 @@ end
 
 -- Функция для добавления опции "Заправить пропаном"
 local function addPropaneRefuelOption(context, generator, player)
-    debugPrint("Dobavlenie opcii 'Zapravit propanom'")
 
-    local optionText = getText("ContextMenu_GeneratorAddPropane") or "Заправить пропаном"
+	local optionText = getText("ContextMenu_GeneratorAddPropane")
     local option = context:addOption(optionText, nil, onAddPropaneToGenerator, generator, player)
-
     local playerObj = getSpecificPlayer(player)
-    if not playerObj then
-        option.notAvailable = true
-        return option
-    end
 
     -- Проверка 1: Может ли игрок подойти к генератору
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_CannotReach") or "Не могу дотянуться"
+        tooltip.description = getText("Tooltip_CannotReach")
         option.toolTip = tooltip
-        return option
+		return option
     end
-
-    -- Проверка 2: Наличие баллона с пропаном
-    local hasTank = false
-    local propaneTank = nil
-    local primary = playerObj:getPrimaryHandItem()
-    local secondary = playerObj:getSecondaryHandItem()
-
-    if (primary and primary:getType() == "PropaneTank" and primary:getUsedDelta() > 0) or
-       (secondary and secondary:getType() == "PropaneTank" and secondary:getUsedDelta() > 0) then
-        hasTank = true
-    end
+	
+	-- Проверка наличия балона в инвентаре
+	if not playerObj:contains("Base.PropaneTank") then
+		option.notAvailable = true
+        local tooltip = ISToolTip:new()
+        tooltip:setName(optionText)
+        tooltip.description = getText("Tooltip_CannotReach")
+        option.toolTip = tooltip
+		return option
+	end
 
     -- Проверка 3: Генератор не должен быть полным
     if generator:getFuel() >= generator:getMaxFuel() then
-        hasTank = false
+        option.notAvailable = true
+        local tooltip = ISToolTip:new()
+        tooltip:setName(optionText)
+        tooltip.description = getText("Tooltip_CannotReach")
+        option.toolTip = tooltip
+		return option
     end
 
     -- Проверка 4: Генератор не должен быть включен
     if generator:isActivated() then
-        hasTank = false
-    end
-
-    -- Делаем опцию неактивной если нет баллона
-    if not hasTank then
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_NeedPropaneTank") or "Нужен пропановый баллон"
+        tooltip.description = getText("Tooltip_CannotReach")
         option.toolTip = tooltip
-    end
-
+		return option
+    end	
+	
     debugPrint("Opciya zapravki propanom obrabotana")
     return option
 end
@@ -104,23 +98,19 @@ end
 local function addDrainFuelOption(context, generator, player)
     debugPrint("Dobavlenie opcii 'Slit toplivo' (polnaya realizaciya)")
 
-    local optionText = getText("ContextMenu_GeneratorDrainFuel") or "Слить топливо"
+    local optionText = getText("ContextMenu_GeneratorDrainFuel")
     
     -- ВАЖНО: передаем nil как worldobjects, обработчик сам получит их
     local option = context:addOption(optionText, nil, onDrainFuel, generator, player)
 
     local playerObj = getSpecificPlayer(player)
-    if not playerObj then
-        option.notAvailable = true
-        return option
-    end
 
     -- Проверка 1: Может ли игрок подойти к генератору
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_CannotReach") or "Не могу дотянуться"
+        tooltip.description = getText("Tooltip_CannotReach")
         option.toolTip = tooltip
         return option
     end
@@ -130,26 +120,7 @@ local function addDrainFuelOption(context, generator, player)
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_NoFuelToDrain") or "Нет топлива для слива"
-        option.toolTip = tooltip
-        return option
-    end
-
-    -- Проверка 3: Ищем пустую емкость в инвентаре (по аналогии с игровой логикой)
-    local playerInv = playerObj:getInventory()
-    local emptyContainers = playerInv:getAllEvalRecurse(function(item)
-        if not item then return false end
-        local fluidContainer = item:getFluidContainer()
-        if not fluidContainer then return false end
-        -- Ищем емкости, которые могут хранить топливо и пусты
-        return fluidContainer:isEmpty() and not fluidContainer:isInputLocked()
-    end)
-
-    if emptyContainers:isEmpty() then
-        option.notAvailable = true
-        local tooltip = ISToolTip:new()
-        tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_NeedEmptyContainer") or "Нужна пустая канистра или другая емкость"
+        tooltip.description = getText("Tooltip_NoFuelToDrain")
         option.toolTip = tooltip
         return option
     end
@@ -159,7 +130,7 @@ local function addDrainFuelOption(context, generator, player)
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_GeneratorActive") or "Сначала выключи генератор"
+        tooltip.description = getText("Tooltip_GeneratorActive")
         option.toolTip = tooltip
         return option
     end
@@ -179,17 +150,20 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
     local playerObj = getSpecificPlayer(player)
     if not playerObj then return end
 
-    -- Находим генератор среди объектов
+    -- Поиск генератора среди объектов
     local generator = nil
-    for i = 1, #worldobjects do
-        local obj = worldObjects[i]
-        if obj and instanceof(obj, "IsoGenerator") then
-            generator = obj
-            break
-        end
+	for i = 1, #worldobjects do
+		local obj = worldobjects[i]
+		if isOldGenerator(obj) then
+			generator = obj
+			break
+		end
+	end
+    
+    if not generator then
+        debugPrint("Generator ne najden sredi ob'ektov")
+        return
     end
-
-    if not generator then return end
 
     -- Получаем существующие опции из оригинального меню
     local originalOptionCount = #context.options
@@ -202,7 +176,7 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
 
     -- Ищем позицию опции "Информация" чтобы вставить перед ней
     local insertPosition = nil
-    local infoOptionText = getText("ContextMenu_GeneratorInfo") or "Информация"
+    local infoOptionText = getText("ContextMenu_GeneratorInfo")
 
     for i, option in ipairs(context.options) do
         if option.name == infoOptionText then
@@ -221,12 +195,8 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
     -- ДОБАВЛЯЕМ НАШИ ОПЦИИ
     -- ====================================================================
 
-    -- Разделитель перед нашими опциями
-    context:insertOptionAfter(nil, nil, insertPosition)
-    insertPosition = insertPosition + 1
-
-    -- Опция "Заправить пропаном" (для всех типов генераторов)
-    if not generator:isActivated() and generator:getFuel() < generator:getMaxFuel() then
+    -- Опция "Заправить пропаном" 
+    if isOldGenerator(generator) or isPropaneGenerator(generator) then
         addPropaneRefuelOption(context, generator, player)
         debugPrint("Opciya zapravki propanom dobavlena")
     end
@@ -237,99 +207,10 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
         debugPrint("Opciya slivaniya topliva dobavlena (s proverkami)")
     end
 
-    -- Разделитель после наших опций
-    context:insertOptionAfter(nil, nil, insertPosition)
 
     debugPrint("Kontekstnoe menyu uspeshno obrabotano")
 end
 
--- ====================================================================
--- ОБРАБОТЧИКИ ДЕЙСТВИЙ (исправленный формат для интеграции с игрой)
--- ====================================================================
-
--- Обработчик для заправки пропаном (теперь соответствует игровому формату)
-function onAddPropaneToGenerator(worldobjects, generator, player)
-    debugPrint("Vyzov zapravki propanom (novyj format)")
-
-    local playerObj = getSpecificPlayer(player)
-    if not playerObj or not generator then return end
-
-    -- Проверяем, может ли игрок подойти к генератору (как в игровых функциях)
-    if not luautils.walkAdj(playerObj, generator:getSquare()) then
-        debugPrint("Igrok ne mozhet podojti k generatoru")
-        return
-    end
-
-    -- Поиск баллона в руках
-    local propaneTank = nil
-    local primary = playerObj:getPrimaryHandItem()
-    local secondary = playerObj:getSecondaryHandItem()
-
-    if primary and primary:getType() == "PropaneTank" and primary:getUsedDelta() > 0 then
-        propaneTank = primary
-    elseif secondary and secondary:getType() == "PropaneTank" and secondary:getUsedDelta() > 0 then
-        propaneTank = secondary
-    end
-
-    if not propaneTank then
-        playerObj:Say(getText("IGUI_PlayerText_NeedPropaneTank") or "Нужен пропановый баллон")
-        debugPrint("Net propanoogo ballona v rukah")
-        return
-    end
-
-    -- Проверяем, не полон ли генератор
-    if generator:getFuel() >= generator:getMaxFuel() then
-        playerObj:Say(getText("IGUI_PlayerText_GeneratorFull") or "Генератор полон")
-        debugPrint("Generator polon")
-        return
-    end
-
-    -- Создаем и добавляем действие
-    local action = ISAddPropaneToGenerator:new(playerObj, generator, propaneTank)
-    ISTimedActionQueue.add(action)
-    debugPrint("Deistvie zapravki dobavleno v ochered")
-end
-
--- Обработчик для слива топлива (теперь соответствует игровому формату)
-function onDrainFuel(worldobjects, generator, player)
-    debugPrint("Vyzov slivaniya topliva (novyj format)")
-
-    local playerObj = getSpecificPlayer(player)
-    if not playerObj or not generator then return end
-
-    -- Проверяем, может ли игрок подойти к генератору
-    if not luautils.walkAdj(playerObj, generator:getSquare()) then
-        debugPrint("Igrok ne mozhet podojti k generatoru dlya slivaniya")
-        return
-    end
-
-    -- Проверяем, есть ли топливо
-    if generator:getFuel() <= 0 then
-        playerObj:Say(getText("IGUI_PlayerText_NoFuelToDrain") or "Нет топлива для слива")
-        debugPrint("Net topliva dlya slivaniya")
-        return
-    end
-
-    -- Ищем пустую емкость (можно выбрать первую подходящую или реализовать выбор)
-    local playerInv = playerObj:getInventory()
-    local emptyContainers = playerInv:getAllEvalRecurse(function(item)
-        if not item then return false end
-        local fluidContainer = item:getFluidContainer()
-        if not fluidContainer then return false end
-        return fluidContainer:isEmpty() and not fluidContainer:isInputLocked()
-    end)
-
-    if emptyContainers:isEmpty() then
-        playerObj:Say(getText("IGUI_PlayerText_NeedEmptyContainer") or "Нужна пустая емкость")
-        debugPrint("Net pustoj emkosti")
-        return
-    end
-
-    -- Здесь будет логика создания действия для слива топлива
-    -- TODO: Создать класс ISDrainGeneratorFuel
-    playerObj:Say("Сливаем топливо...")
-    debugPrint("Slivanie topliva - trebuetsya sozdanie klassa ISDrainGeneratorFuel")
-end
 
 -- ====================================================================
 -- ИНИЦИАЛИЗАЦИЯ
