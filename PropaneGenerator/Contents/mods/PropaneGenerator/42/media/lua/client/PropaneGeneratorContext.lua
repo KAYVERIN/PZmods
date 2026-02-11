@@ -46,10 +46,11 @@ end
 -- Функция для добавления опции "Заправить пропаном"
 local function addPropaneRefuelOption(context, generator, player)
 
-	local optionText = getText("ContextMenu_GeneratorAddPropane")
+	local optionText = getText("ContextMenu_RefuelPropane")
     local option = context:addOption(optionText, nil, onAddPropaneToGenerator, generator, player)
     local playerObj = getSpecificPlayer(player)
-
+	local playerInv = playerObj:getInventory()
+	
     -- Проверка 1: Может ли игрок подойти к генератору
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
@@ -60,12 +61,12 @@ local function addPropaneRefuelOption(context, generator, player)
 		return option
     end
 	
-	-- Проверка наличия балона в инвентаре
-	if not playerObj:contains("Base.PropaneTank") then
+	-- Проверка наличия баллона в инвентаре
+	if not playerInv:contains("Base.PropaneTank") then
 		option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_CannotReach")
+        tooltip.description = getText("Tooltip_NoPropaneTank")
         option.toolTip = tooltip
 		return option
 	end
@@ -75,7 +76,7 @@ local function addPropaneRefuelOption(context, generator, player)
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_CannotReach")
+        tooltip.description = getText("Tooltip_GeneratorFull")
         option.toolTip = tooltip
 		return option
     end
@@ -85,7 +86,7 @@ local function addPropaneRefuelOption(context, generator, player)
         option.notAvailable = true
         local tooltip = ISToolTip:new()
         tooltip:setName(optionText)
-        tooltip.description = getText("Tooltip_CannotReach")
+        tooltip.description = getText("Tooltip_GeneratorActive")
         option.toolTip = tooltip
 		return option
     end	
@@ -98,7 +99,7 @@ end
 local function addDrainFuelOption(context, generator, player)
     debugPrint("Dobavlenie opcii 'Slit toplivo' (polnaya realizaciya)")
 
-    local optionText = getText("ContextMenu_GeneratorDrainFuel")
+    local optionText = getText("ContextMenu_DrainFuel")
     
     -- ВАЖНО: передаем nil как worldobjects, обработчик сам получит их
     local option = context:addOption(optionText, nil, onDrainFuel, generator, player)
@@ -207,10 +208,8 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
         debugPrint("Opciya slivaniya topliva dobavlena (s proverkami)")
     end
 
-
     debugPrint("Kontekstnoe menyu uspeshno obrabotano")
 end
-
 
 -- ====================================================================
 -- ИНИЦИАЛИЗАЦИЯ

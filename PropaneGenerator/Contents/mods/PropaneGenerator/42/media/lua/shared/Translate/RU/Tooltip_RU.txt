@@ -1,3 +1,7 @@
 Tooltip_RU = {
-		PropaneGeneratorTooltip = "Генератор, работающий на сжиженном пропане. Тише и эффективнее бензинового."
+	Tooltip_CannotReach = "Вы не можете подойти к генератору",
+	Tooltip_NoPropaneTank = "У вас нет баллона с пропаном",
+	Tooltip_GeneratorFull = "Генератор уже полностью заправлен",
+	Tooltip_GeneratorActive = "Сначала выключите генератор",
+	Tooltip_NoFuelToDrain = "В генераторе нет топлива",
 }

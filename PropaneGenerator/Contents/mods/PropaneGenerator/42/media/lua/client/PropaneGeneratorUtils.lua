@@ -31,7 +31,7 @@ function PropaneGenerator.calculateFuelTransfer(generator, propaneTank)
     
     local currentFuel = generator:getFuel()
     local maxFuel = generator:getMaxFuel()
-    llocal currentUses = self.propaneTank:getCurrentUses()
+    local currentUses = self.propaneTank:getCurrentUses()
 	local maxUses = self.propaneTank:getMaxUses()
 	local tankPercent = currentUses / maxUses
     

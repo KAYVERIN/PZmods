@@ -1,4 +1,6 @@
 ContextMenu_EN = {
-	ContextMenu_RefuelPropane = "Refuel with Propane"
-	ContextMenu_NoPropaneTank = "I don't have a propane tank"
+	ContextMenu_RefuelPropane = "Refuel with Propane",
+	ContextMenu_NoPropaneTank = "I don't have a propane tank",
+	ContextMenu_DrainFuel = "Drain Fuel",
+
 }
