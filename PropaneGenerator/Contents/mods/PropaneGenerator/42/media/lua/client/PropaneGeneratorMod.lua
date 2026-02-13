@@ -1,6 +1,6 @@
 -- ====================================================================
 -- PropaneGeneratorMod.lua - Мод для заправки генератора пропаном
--- Версия: 4.0 (Объединенная стабильная версия)
+-- Версия: 5.2 (Оптимизация кода)
 -- ====================================================================
 
 -- ====================================================================
@@ -15,9 +15,9 @@ ENABLE_DEBUG_PRINTS = true
 FUEL_PER_FULL_TANK = 50
 
 -- Пороговые значения для смены типа генератора (в десятичных дробях):
--- Если в генераторе БОЛЬШЕ 70% пропана - становится пропановым
--- Если 70% или меньше - возвращается к бензину
-PROPANE_MIN_TO_KEEP = 0.70  -- 70%
+-- Если в генераторе БОЛЬШЕ ИЛИ РАВНО 70% пропана - становится пропановым
+-- Если в генераторе МЕНЬШЕ 70% пропана (т.е. БОЛЬШЕ 30% бензина) - становится бензиновым
+PROPANE_THRESHOLD = 0.70  -- 70%
 
 -- Минимальный уровень в баллоне для проверки "пустоты"
 EMPTY_TANK_THRESHOLD = 0.001
@@ -38,7 +38,7 @@ function debugPrint(message)
 end
 
 debugPrint("=================================================================")
-debugPrint("ZAGRUZKA PROPANE GENERATOR MOD - Obedinennaia versiia 4.0")
+debugPrint("ZAGRUZKA PROPANE GENERATOR MOD - Versiya 5.2")
 debugPrint("=================================================================")
 
 -- ====================================================================
@@ -53,7 +53,7 @@ PropaneGenerator = {}
 -- Конфигурация мода (для доступа из других модулей)
 PropaneGenerator.config = {
     FUEL_PER_FULL_TANK = FUEL_PER_FULL_TANK,
-    PROPANE_MIN_TO_KEEP = PROPANE_MIN_TO_KEEP,
+    PROPANE_THRESHOLD = PROPANE_THRESHOLD,
     EMPTY_TANK_THRESHOLD = EMPTY_TANK_THRESHOLD
 }
 
@@ -105,7 +105,7 @@ end
 debugPrint("[UTILITY] Vspomogatelnye funkcii zagruzheny")
 
 -- ====================================================================
--- РАЗДЕЛ 4: PROPANE GENERATOR UI - ФУНКЦИИ ИНТЕРФЕЙСА
+-- РАЗДЕЛ 4: PROPANE GENERATOR UI - ФУНКЦИИ ИНТЕРФЕЙСА (ИСПРАВЛЕНО)
 -- ====================================================================
 
 require "ISUI/ISPanel"
@@ -125,28 +125,38 @@ function PropaneGeneratorInfoWindow:createChildren()
     local y = 100  -- Позиция после оригинальных элементов
     
     -- Индикатор типа генератора
-    local generatorType = "Benzinovyi"
-    if self.generator and self.generator:getModData().isPropaneGenerator then
-        generatorType = "Propanovyi"
+    local isPropane = false
+    if self.generator then
+        isPropane = PropaneGenerator.isPropaneGenerator(self.generator)
     end
     
-    self.typeLabel = ISLabel:new(10, y, 20, generatorType, 1, 1, 1, 1, UIFont.Small, true)
-    self:addChild(self.typeLabel)
-    y = y + 25
+    local generatorType = isPropane and "Propanovyi" or "Benzinovyi"
     
-    -- Преимущества пропанового генератора
-    if generatorType == "Propanovyi" then
-        self.bonusLabel = ISLabel:new(10, y, 20, "Preimushchestva:", 0.8, 1, 0.8, 1, UIFont.Small, true)
-        self:addChild(self.bonusLabel)
-        y = y + 20
+    -- ИСПРАВЛЕНО: Добавляем проверку на существование self перед добавлением
+    if self then
+        self.typeLabel = ISLabel:new(10, y, 20, generatorType, 1, 1, 1, 1, UIFont.Small, true)
+        self:addChild(self.typeLabel)
+        y = y + 25
         
-        self.bonus1 = ISLabel:new(20, y, 20, "- Menshe shuma (-40%)", 0.8, 1, 0.8, 1, UIFont.Small, true)
-        self:addChild(self.bonus1)
-        y = y + 18
-        
-        self.bonus2 = ISLabel:new(20, y, 20, "- Lomaetsia rezhe (+60%)", 0.8, 1, 0.8, 1, UIFont.Small, true)
-        self:addChild(self.bonus2)
-        y = y + 18
+        -- Преимущества пропанового генератора
+        if isPropane then
+            self.bonusLabel = ISLabel:new(10, y, 20, "Preimushchestva:", 0.8, 1, 0.8, 1, UIFont.Small, true)
+            self:addChild(self.bonusLabel)
+            y = y + 20
+            
+            self.bonus1 = ISLabel:new(20, y, 20, "- Menshe shuma (-40%)", 0.8, 1, 0.8, 1, UIFont.Small, true)
+            self:addChild(self.bonus1)
+            y = y + 18
+            
+            self.bonus2 = ISLabel:new(20, y, 20, "- Lomaetsia rezhe (+60%)", 0.8, 1, 0.8, 1, UIFont.Small, true)
+            self:addChild(self.bonus2)
+            y = y + 18
+        else
+            -- ИСПРАВЛЕНО: Инициализируем переменные, даже если они не видны
+            self.bonusLabel = nil
+            self.bonus1 = nil
+            self.bonus2 = nil
+        end
     end
 end
 
@@ -157,29 +167,29 @@ function PropaneGeneratorInfoWindow:render()
     end
     
     -- Обновляем тип генератора если он изменился
-    if self.generator then
-        local modData = self.generator:getModData()
-        local isPropane = modData.isPropaneGenerator == true
+    if self.generator and self.typeLabel then  -- ИСПРАВЛЕНО: Добавлена проверка self.typeLabel
+        local isPropane = PropaneGenerator.isPropaneGenerator(self.generator)
         
-        if isPropane and self.typeLabel.title ~= "Propanovyi" then
-            self.typeLabel.title = "Propanovyi"
-            self.typeLabel:setColor(0.8, 1, 0.8)
-            
-            -- Показываем бонусы
-            if self.bonusLabel then
-                self.bonusLabel:setVisible(true)
-                self.bonus1:setVisible(true)
-                self.bonus2:setVisible(true)
+        local currentTitle = self.typeLabel.title
+        local expectedTitle = isPropane and "Propanovyi" or "Benzinovyi"
+        
+        if currentTitle ~= expectedTitle then
+            self.typeLabel.title = expectedTitle
+            if isPropane then
+                self.typeLabel:setColor(0.8, 1, 0.8)
+            else
+                self.typeLabel:setColor(1, 1, 1)
             end
-        elseif not isPropane and self.typeLabel.title ~= "Benzinovyi" then
-            self.typeLabel.title = "Benzinovyi"
-            self.typeLabel:setColor(1, 1, 1)
             
-            -- Прячем бонусы
+            -- Показываем/прячем бонусы (ИСПРАВЛЕНО: добавляем проверки)
             if self.bonusLabel then
-                self.bonusLabel:setVisible(false)
-                self.bonus1:setVisible(false)
-                self.bonus2:setVisible(false)
+                self.bonusLabel:setVisible(isPropane)
+            end
+            if self.bonus1 then
+                self.bonus1:setVisible(isPropane)
+            end
+            if self.bonus2 then
+                self.bonus2:setVisible(isPropane)
             end
         end
     end
@@ -206,14 +216,15 @@ local function overrideGeneratorWindow()
             setmetatable(window, PropaneGeneratorInfoWindow)
             PropaneGeneratorInfoWindow.__index = PropaneGeneratorInfoWindow
             
+            -- Сохраняем generator в окне
+            window.generator = generator
+            
             return window
         end
         
         debugPrint("[UI] Pereopredelenie okna generatora vypolneno")
     end
 end
-
-debugPrint("[UI] Funkcii interfeisa zagruzheny")
 
 -- ====================================================================
 -- РАЗДЕЛ 5: ОСНОВНЫЕ ФУНКЦИИ МОДА
@@ -259,21 +270,6 @@ local function isOldGenerator(generator)
     local genType = getGeneratorTypeBySprite(generator)
     local isOld = (genType == GENERATOR_OLD)
     return isOld
-end
-
--- Функция проверки типа генератора по ModData
-local function getGeneratorType(generator)
-    if not generator then 
-        debugPrint("Oshibka: generator = nil")
-        return "unknown"
-    end
-    
-    local modData = generator:getModData()
-    if modData.isPropaneGenerator == true then
-        return "propane"
-    else
-        return "gasoline"
-    end
 end
 
 -- Функция для автоматической экипировки пропанового баллона
@@ -527,9 +523,9 @@ function ISAddPropaneToGenerator:perform()
     ISBaseTimedAction.perform(self)
 end
 
--- Основная логика заправки
+-- Основная логика заправки пропаном
 function ISAddPropaneToGenerator:complete()
-    debugPrint("=== OSNOVNAIa LOGIKA ZAPRAVKI PROPANOM ===")
+    debugPrint("=== ZAPRAVKA PROPANOM ===")
 
     -- Получаем текущие значения
     local currentFuel = self.generator:getFuel()
@@ -544,41 +540,15 @@ function ISAddPropaneToGenerator:complete()
     local fuelToTransfer = math.min(availableFuelFromTank, freeSpace)
 
     debugPrint(string.format("Tekushchee toplivo: %.1f", currentFuel))
-    debugPrint(string.format("Mozhno dobavit: %.1f", fuelToTransfer))
+    debugPrint(string.format("Dobavleno propana: %.1f", fuelToTransfer))
 
     -- Сколько топлива будет после заправки
     local fuelAfterRefuel = currentFuel + fuelToTransfer
-    local propanePercentageAfter = fuelAfterRefuel / maxFuel
+    local propanePercentage = fuelAfterRefuel / maxFuel  -- % пропана в генераторе
 
-    debugPrint(string.format("Budet posle zapravki: %.1f", fuelAfterRefuel))
-    debugPrint(string.format("Procent propana posle: %.1f%%", propanePercentageAfter * 100))
+    debugPrint(string.format("Toplivo posle: %.1f", fuelAfterRefuel))
+    debugPrint(string.format("Propan: %.1f%%", propanePercentage * 100))
 
-    -- Определяем, нужна ли замена генератора
-    local needsPropaneGenerator = (propanePercentageAfter > PROPANE_MIN_TO_KEEP)
-    local currentType = getGeneratorType(self.generator)
-    local targetGenerator = self.generator
-
-    -- Если нужно заменить на пропановый И текущий не пропановый
-    if needsPropaneGenerator and currentType ~= "propane" then
-        debugPrint("ZAMENA: na propanovyi generator")
-        local newGenerator = replaceGeneratorWithNewType(self.generator, GENERATOR_PROPANE, self.character)
-        if newGenerator then
-            targetGenerator = newGenerator
-        end
-    -- Если нужно заменить на бензиновый И текущий не бензиновый
-    elseif not needsPropaneGenerator and currentType ~= "gasoline" then
-        debugPrint("ZAMENA: na benzinovyi generator")
-        local newGenerator = replaceGeneratorWithNewType(self.generator, GENERATOR_OLD, self.character)
-        if newGenerator then
-            targetGenerator = newGenerator
-        end
-    else
-        debugPrint("ZAMENA: tip generatora ne meniaem")
-    end
-
-    -- Выполняем заправку
-    debugPrint("VYPOLNIAEM ZAPRAVKU...")
-    
     -- Уменьшаем уровень в баллоне
     local percentUsed = fuelToTransfer / FUEL_PER_FULL_TANK
     local newTankPercent = currentTankPercent - percentUsed
@@ -589,25 +559,222 @@ function ISAddPropaneToGenerator:complete()
     end
 
     self.propaneTank:setUsedDelta(newTankPercent)
-    debugPrint(string.format("Novyi uroven v ballone: %.1f%%", newTankPercent * 100))
+    debugPrint(string.format("Ballon: %.1f%%", newTankPercent * 100))
 
-    -- Увеличиваем топливо в генераторе
-    if targetGenerator and targetGenerator.setFuel then
-        targetGenerator:setFuel(fuelAfterRefuel)
-        debugPrint(string.format("Novyi uroven topliva v generatore: %.1f", fuelAfterRefuel))
+    -- Получаем текущий тип генератора (ИСПОЛЬЗУЕМ PropaneGenerator.isPropaneGenerator)
+    local isPropane = PropaneGenerator.isPropaneGenerator(self.generator)
+    local currentType = isPropane and "propane" or "gasoline"
+    debugPrint(string.format("Tekushchiy tip: %s", currentType))
+
+    -- ОПРЕДЕЛЯЕМ НУЖНЫЙ ТИП ПОСЛЕ ЗАПРАВКИ
+    -- Пропановый если пропана >= 70%
+    -- Бензиновый если пропана < 70%
+    local shouldBePropane = (propanePercentage >= PROPANE_THRESHOLD)
+
+    debugPrint(string.format("Dolzhen byt: %s", shouldBePropane and "PROPANOVIY" or "BENZINOVIY"))
+
+    -- Устанавливаем топливо в генератор
+    self.generator:setFuel(fuelAfterRefuel)
+
+    -- ПРОВЕРЯЕМ НУЖНА ЛИ ЗАМЕНА
+    if shouldBePropane and not isPropane then
+        -- Случай: должен быть пропановым, но сейчас бензиновый
+        debugPrint(">>> ZAMENA: BENZINOVIY -> PROPANOVIY (propan >=70%)")
+        local newGenerator = replaceGeneratorWithNewType(self.generator, GENERATOR_PROPANE, self.character)
+        if newGenerator then
+            -- Убеждаемся что топливо скопировано
+            if newGenerator:getFuel() ~= fuelAfterRefuel then
+                newGenerator:setFuel(fuelAfterRefuel)
+            end
+            local modData = newGenerator:getModData()
+            modData.isPropaneGenerator = true
+            debugPrint("Generator zamenen na propanoviy")
+        end
         
-        -- Обновляем ModData
-        local modData = targetGenerator:getModData()
-        modData.isPropaneGenerator = needsPropaneGenerator
+    elseif not shouldBePropane and isPropane then
+        -- Случай: должен быть бензиновым, но сейчас пропановый
+        debugPrint(">>> ZAMENA: PROPANOVIY -> BENZINOVIY (propan <70%)")
+        local newGenerator = replaceGeneratorWithNewType(self.generator, GENERATOR_OLD, self.character)
+        if newGenerator then
+            if newGenerator:getFuel() ~= fuelAfterRefuel then
+                newGenerator:setFuel(fuelAfterRefuel)
+            end
+            local modData = newGenerator:getModData()
+            modData.isPropaneGenerator = false
+            debugPrint("Generator zamenen na benzinoviy")
+        end
+        
+    else
+        -- Тип уже правильный - просто обновляем ModData
+        debugPrint(">>> Tip uzhe sootvetstvuet - obnovlenie ModData")
+        local modData = self.generator:getModData()
+        modData.isPropaneGenerator = shouldBePropane
     end
     
-    debugPrint("=== ZAPRAVKA ZAVERSHENA ===")
+    debugPrint("=== ZAPRAVKA PROPANOM ZAVERSHENA ===")
 end
 
 -- ====================================================================
--- РАЗДЕЛ ОТЛАДКА
+-- РАЗДЕЛ 7: ОБРАБОТЧИКИ КОНТЕКСТНОГО МЕНЮ
+-- ====================================================================
+
+-- Функция для слива топлива
+function onDrainFuel(worldObjects, generator, playerNum)
+    debugPrint("Sliv topliva iz generatora")
+    local playerObj = getSpecificPlayer(playerNum)
+    if not playerObj or not generator then 
+        debugPrint("Oshibka: igrok ili generator ne naiden")
+        return 
+    end
+    
+    -- Проверяем, выключен ли генератор
+    if generator:isActivated() then
+        playerObj:Say("Snachala vykliuchite generator")
+        debugPrint("Generator aktivirovan - sliv nevozmozhen")
+        return
+    end
+    
+    -- Сливаем топливо
+    local drainedFuel = generator:getFuel()
+    generator:setFuel(0)
+    playerObj:Say("Slito " .. math.floor(drainedFuel) .. " edinic topliva")
+    debugPrint(string.format("Slito %.1f edinic topliva", drainedFuel))
+end
+
+
+
+function onAddPropaneToGenerator(worldObjects, generator, playerNum)
+    debugPrint("Vyzov zapravki propanom iz kontekstnogo meniu")
+	
+    local playerObj = getSpecificPlayer(playerNum)
+    if not playerObj or not generator then 
+        debugPrint("Oshibka: igrok ili generator ne naiden")
+        return 
+    end
+
+    -- Проверяем, выключен ли генератор
+    if generator:isActivated() then
+        playerObj:Say("Snachala vykliuchite generator")
+        debugPrint("Generator aktivirovan - zapravka nevozmozhna")
+        return
+    end
+
+    -- Экипируем баллон
+    local propaneTank = ensurePropaneTankInHands(playerObj)
+    if not propaneTank then
+        playerObj:Say("Nuzhen propanovyi ballon")
+        debugPrint("Ne udalos ekipirovat ballon")
+        return
+    end
+
+    -- Создаем и добавляем действие
+    local action = ISAddPropaneToGenerator:new(playerObj, generator, propaneTank)
+    ISTimedActionQueue.add(action)
+    debugPrint("Deistvie zapravki dobavleno v ochered")
+end
+
+-- ====================================================================
+-- ПЕРЕХВАТ ЗАПРАВКИ БЕНЗИНОМ
+-- ====================================================================
+
+-- Сохраняем оригинальную функцию заправки
+local originalOnAddFuelGenerator = ISWorldObjectContextMenu.onAddFuelGenerator
+
+-- Функция-перехватчик для заправки бензином
+local function onAddFuelGeneratorInterceptor(worldobjects, petrolCan, generator, player, context)
+    debugPrint("=== ZAPRAVKA BENZINOM ===")
+    
+    local playerObj = getSpecificPlayer(player)
+    if not playerObj or not generator then return end
+    
+    -- Получаем текущее топливо ДО заправки
+    local currentFuel = generator:getFuel()
+    local maxFuel = generator:getMaxFuel()
+    
+    debugPrint(string.format("Toplivo DO: %.1f", currentFuel))
+    
+    -- Запоминаем, что это перехват заправки бензином
+    -- Мы не можем изменить логику самой заправки, но можем обработать результат ПОСЛЕ
+    
+    -- Вызываем оригинальную функцию заправки
+    if originalOnAddFuelGenerator then
+        originalOnAddFuelGenerator(worldobjects, petrolCan, generator, player, context)
+    end
+    
+    -- Теперь нужно обработать результат после завершения заправки
+    -- Для этого создаем тикер, который проверит изменение топлива через кадр
+    local function checkAfterRefuel()
+        -- Получаем топливо ПОСЛЕ заправки
+        local newFuel = generator:getFuel()
+        local propanePercentage = newFuel / maxFuel  -- % пропана
+        
+        debugPrint(string.format("Toplivo POSLE: %.1f", newFuel))
+        debugPrint(string.format("Propan: %.1f%%", propanePercentage * 100))
+        
+        -- Получаем текущий тип генератора (ИСПОЛЬЗУЕМ PropaneGenerator.isPropaneGenerator)
+        local isPropane = PropaneGenerator.isPropaneGenerator(generator)
+        local currentType = isPropane and "propane" or "gasoline"
+        
+        -- ОПРЕДЕЛЯЕМ НУЖНЫЙ ТИП ПОСЛЕ ЗАПРАВКИ
+        -- Пропановый если пропана >= 70%
+        -- Бензиновый если пропана < 70%
+        local shouldBePropane = (propanePercentage >= PROPANE_THRESHOLD)
+        
+        debugPrint(string.format("Dolzhen byt: %s", shouldBePropane and "PROPANOVIY" or "BENZINOVIY"))
+        debugPrint(string.format("Tekushchiy tip: %s", currentType))
+        
+        -- ПРОВЕРЯЕМ НУЖНА ЛИ ЗАМЕНА
+        if shouldBePropane and not isPropane then
+            -- Случай: должен быть пропановым, но сейчас бензиновый
+            debugPrint(">>> ZAMENA: BENZINOVIY -> PROPANOVIY (propan >=70%)")
+            local newGenerator = replaceGeneratorWithNewType(generator, GENERATOR_PROPANE, playerObj)
+            if newGenerator then
+                if newGenerator:getFuel() ~= newFuel then
+                    newGenerator:setFuel(newFuel)
+                end
+                local modData = newGenerator:getModData()
+                modData.isPropaneGenerator = true
+                debugPrint("Generator zamenen na propanoviy")
+            end
+            
+        elseif not shouldBePropane and isPropane then
+            -- Случай: должен быть бензиновым, но сейчас пропановый
+            debugPrint(">>> ZAMENA: PROPANOVIY -> BENZINOVIY (propan <70%)")
+            local newGenerator = replaceGeneratorWithNewType(generator, GENERATOR_OLD, playerObj)
+            if newGenerator then
+                if newGenerator:getFuel() ~= newFuel then
+                    newGenerator:setFuel(newFuel)
+                end
+                local modData = newGenerator:getModData()
+                modData.isPropaneGenerator = false
+                debugPrint("Generator zamenen na benzinoviy")
+            end
+            
+        else
+            -- Тип уже правильный - просто обновляем ModData
+            debugPrint(">>> Tip uzhe sootvetstvuet - obnovlenie ModData")
+            local modData = generator:getModData()
+            modData.isPropaneGenerator = shouldBePropane
+        end
+        
+        debugPrint("=== ZAPRAVKA BENZINOM ZAVERSHENA ===")
+        
+        -- Отписываемся
+        Events.EveryOneMinute.Remove(checkAfterRefuel)
+    end
+    
+    -- Запускаем проверку через кадр (чтобы дать время завершиться заправке)
+    Events.EveryOneMinute.Add(checkAfterRefuel)
+end
+
+-- Переопределяем функцию в ISWorldObjectContextMenu
+ISWorldObjectContextMenu.onAddFuelGenerator = onAddFuelGeneratorInterceptor
+
+debugPrint("Perehvatchiki zapravki ustanovleny")
+
 -- ====================================================================
 -- Быстрая отладочная функция для проверки параметров генератора
+-- ====================================================================
 function debugGeneratorProperties(generator, action)
     if not generator then
         debugPrint("OSHIbKA: generator = nil")
@@ -655,153 +822,6 @@ function debugGeneratorProperties(generator, action)
     print("=============================\n")
 end
 
-
---------------------------------------------------------------
---------------------------------------------------------------
-
--- ====================================================================
--- РАЗДЕЛ 7: ОБРАБОТЧИКИ КОНТЕКСТНОГО МЕНЮ
--- ====================================================================
-function onAddPropaneToGenerator(worldObjects, generator, playerNum)
-    debugPrint("Vyzov zapravki propanom iz kontekstnogo meniu")
-	
-    local playerObj = getSpecificPlayer(playerNum)
-    if not playerObj or not generator then 
-        debugPrint("Oshibka: igrok ili generator ne naiden")
-        return 
-    end
-
-    -- Проверяем, выключен ли генератор
-    if generator:isActivated() then
-        playerObj:Say("Snachala vykliuchite generator")
-        debugPrint("Generator aktivirovan - zapravka nevozmozhna")
-        return
-    end
-
-    -- Экипируем баллон
-    local propaneTank = ensurePropaneTankInHands(playerObj)
-    if not propaneTank then
-        playerObj:Say("Nuzhen propanovyi ballon")
-        debugPrint("Ne udalos ekipirovat ballon")
-        return
-    end
-
-    -- Создаем и добавляем действие
-    local action = ISAddPropaneToGenerator:new(playerObj, generator, propaneTank)
-    ISTimedActionQueue.add(action)
-    debugPrint("Deistvie zapravki dobavleno v ochered")
-end
-
-function onDrainFuel(worldObjects, generator, playerNum)
-    generator:setFuel(0)
-end
-
--- ====================================================================
--- ПЕРЕХВАТ ЗАПРАВКИ БЕНЗИНОМ (ФИНАЛЬНАЯ ВЕРСИЯ)
--- ====================================================================
-
--- Сохраняем оригинальную функцию заправки
-local originalOnAddFuelGenerator = ISWorldObjectContextMenu.onAddFuelGenerator
-
--- Наша функция-перехватчик (точные параметры из ванильного кода)
-local function onAddFuelGeneratorInterceptor(worldobjects, petrolCan, generator, player, context)
-    debugPrint("=== PEREHVAT ZAPRAVKI BENZINOM ===")
-    
-    local playerObj = getSpecificPlayer(player)
-    if not playerObj or not generator then return end
-    
-    -- Проверяем, является ли генератор пропановым
-    local isPropane = PropaneGenerator.isPropaneGenerator(generator)
-    debugPrint("Generator propanoviy: " .. tostring(isPropane))
-    
-    if isPropane then
-        -- Это пропановый генератор - делаем свои расчеты
-        debugPrint("Propanoviy generator - zapravka benzinom!")
-        
-        -- Проверяем, выключен ли генератор
-        if generator:isActivated() then
-            playerObj:Say("Snachala vyklyuchite generator!")
-            debugPrint("Generator vklyuchen - zapravka nevozmozhna")
-            return
-        end
-        
-        -- Получаем текущее топливо генератора
-        local currentFuel = generator:getFuel()
-        local maxFuel = generator:getMaxFuel()
-        
-        -- Получаем количество топлива в канистре
-        local fluidAmount = 0
-        if petrolCan and petrolCan.getFluidContainer then
-            local fluidContainer = petrolCan:getFluidContainer()
-            if fluidContainer then
-                fluidAmount = fluidContainer:getAmount()
-                debugPrint("Kolichestvo benzina v kanistre: " .. tostring(fluidAmount))
-            end
-        end
-        
-        -- Сколько топлива МАКСИМАЛЬНО может быть добавлено (если использовать всю канистру)
-        local maxFuelToAdd = math.min(fluidAmount, maxFuel - currentFuel)
-        
-        -- Новый уровень топлива после заправки ВСЕЙ канистры
-        local newFuel = currentFuel + maxFuelToAdd
-        local propanePercentage = newFuel / maxFuel
-        
-        debugPrint(string.format("Tekushchee toplivo: %.1f", currentFuel))
-        debugPrint(string.format("Max mozhno dobavit: %.1f", maxFuelToAdd))
-        debugPrint(string.format("Max budet posle: %.1f", newFuel))
-        debugPrint(string.format("Procent PROPANA: %.1f%%", propanePercentage * 100))
-        
-        -- Проверяем порог: если после ИСПОЛЬЗОВАНИЯ ВСЕЙ канистры пропана станет ≤70%
-        if maxFuelToAdd > 0 and propanePercentage <= PROPANE_MIN_TO_KEEP then
-            debugPrint("POSLE ZAPRAVKI VSey KANISTROY PROPAN ≤70%! MENYaEM GENERATOR ZARANEE")
-            
-            -- Запоминаем, что генератор нужно заменить
-            local shouldReplace = true
-            local fuelAfterReplace = currentFuel -- пока не меняем
-            
-            -- Создаем бензиновый генератор
-            local newGenerator = replaceGeneratorWithNewType(generator, GENERATOR_OLD, playerObj)
-            
-            if newGenerator then
-                -- Устанавливаем текущее топливо (без изменений)
-                newGenerator:setFuel(currentFuel)
-                
-                -- Обновляем ModData
-                local modData = newGenerator:getModData()
-                modData.isPropaneGenerator = false
-                
-                debugPrint("Generator zamenen na benzinoviy, zapuskaem zapravku")
-                
-                -- Запускаем оригинальную функцию заправки для НОВОГО генератора
-                if originalOnAddFuelGenerator then
-                    originalOnAddFuelGenerator(worldobjects, petrolCan, newGenerator, player, context)
-                end
-            end
-        else
-            debugPrint("Propan ostaetsya >70% - zapuskaem obychmuyu zapravku")
-            
-            -- Просто запускаем оригинальную функцию
-            if originalOnAddFuelGenerator then
-                originalOnAddFuelGenerator(worldobjects, petrolCan, generator, player, context)
-            end
-        end
-    else
-        -- Обычный бензиновый генератор - просто вызываем оригинал
-        debugPrint("Obychniy generator - vyzyvaem originalnuyu funkciyu")
-        if originalOnAddFuelGenerator then
-            originalOnAddFuelGenerator(worldobjects, petrolCan, generator, player, context)
-        end
-    end
-    
-    debugPrint("=== PEREHVAT ZAPRAVKI BENZINOM ZAVERShEN ===")
-end
-
--- Переопределяем функцию в ISWorldObjectContextMenu
-ISWorldObjectContextMenu.onAddFuelGenerator = onAddFuelGeneratorInterceptor
-
-debugPrint("Perehvatchik zapravki benzinom ustanovlen (finalnaya versiya)")
-
-
 -- ====================================================================
 -- РАЗДЕЛ 8: ИНИЦИАЛИЗАЦИЯ МОДА
 -- ====================================================================
@@ -812,13 +832,13 @@ local function initializeMod()
     debugPrint("=================================================================")
     debugPrint("Nastroiki moda:")
     debugPrint("  FUEL_PER_FULL_TANK: " .. FUEL_PER_FULL_TANK .. " edinic")
-    debugPrint("  PROPANE_MIN_TO_KEEP: " .. (PROPANE_MIN_TO_KEEP * 100) .. "%")
+    debugPrint("  PROPANE_THRESHOLD: " .. (PROPANE_THRESHOLD * 100) .. "% propana = propanoviy")
+    debugPrint("  (t.e. " .. ((1 - PROPANE_THRESHOLD) * 100) .. "% benzina = benzinoviy)")
     debugPrint("  EMPTY_TANK_THRESHOLD: " .. EMPTY_TANK_THRESHOLD)
     debugPrint("=================================================================")
     
     -- Инициализация UI
     overrideGeneratorWindow()
-    
     
     debugPrint("MOD USPEShNO ZAGRUZhEN I GOTOV K RABOTE")
     debugPrint("=================================================================")
