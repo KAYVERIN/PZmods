@@ -4,6 +4,8 @@
 
 require "ISUI/ISContextMenu"
 require "PropaneGeneratorMod"
+require "PropaneGeneratorPickup"
+require "PropaneGeneratorPlacement"
 
 local function debugPrint(message)
     print("[PROPAN_CONTEXT] " .. tostring(message))
@@ -13,7 +15,7 @@ end
 -- ФУНКЦИИ ДЛЯ ПРОВЕРКИ ГЕНЕРАТОРА
 -- ====================================================================
 
--- Проверка, является ли генератор старым (бензиновым)
+-- Проверка, является ли генератор старым
 local function isOldGenerator(generator)
     if not generator then return false end
     -- Проверка по спрайту
