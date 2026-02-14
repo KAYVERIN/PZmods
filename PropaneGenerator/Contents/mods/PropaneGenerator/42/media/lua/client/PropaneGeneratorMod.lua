@@ -327,7 +327,7 @@ local function ensurePropaneTankInHands(character)
     return nil
 end
 
--- Функция для замены генератора на новый тип
+-- Функция для замены генератора на новый тип (ИСПРАВЛЕННАЯ)
 local function replaceGeneratorWithNewType(oldGenerator, newGeneratorType, playerObj)
     if not oldGenerator or not oldGenerator:getSquare() then
         debugPrint("OSHIbKA: generator ili kvadrat ne sushchestvuet")
@@ -346,7 +346,6 @@ local function replaceGeneratorWithNewType(oldGenerator, newGeneratorType, playe
     
     debugPrint("=== NACHALO ZAMENY GENERATORA ===")
     debugPrint(string.format("Staryi: toplivo=%.1f, sostoianie=%d", currentFuel, currentCondition))
-    debugPrint(string.format("Aktivirovan=%s, Podkliuchen=%s", tostring(isActivated), tostring(isConnected)))
 
     -- Шаг 1: Создаём предмет нового генератора
     local newItem = instanceItem(newGeneratorType)
@@ -392,12 +391,16 @@ local function replaceGeneratorWithNewType(oldGenerator, newGeneratorType, playe
     -- Шаг 6: Устанавливаем флаг
     newModData.isPropaneGenerator = (newGeneratorType == GENERATOR_PROPANE)
     
+    -- ===== ВАЖНО: Добавляем generatorFullType для ISTakeGenerator =====
+    newModData.generatorFullType = newGeneratorType
+    
     -- Шаг 7: Синхронизируем
     if newGenerator.transmitCompleteItemToClients then
         newGenerator:transmitCompleteItemToClients()
     end
 
     debugPrint("=== ZAMENA ZAVERSHENA USPEShNO ===")
+    debugPrint("generatorFullType ustanovlen: " .. newGeneratorType)
     return newGenerator
 end
 
