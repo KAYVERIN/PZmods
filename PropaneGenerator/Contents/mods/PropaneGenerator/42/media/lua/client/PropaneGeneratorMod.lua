@@ -612,10 +612,28 @@ end
 -- РАЗДЕЛ 7: ОБРАБОТЧИКИ КОНТЕКСТНОГО МЕНЮ
 -- ====================================================================
 
-function onDrainFuel(worldObjects, generator, playerNum)
+onDrainFuel(worldObjects, generator, playerNum)
     debugPrint("Sliv topliva iz generatora")
     local playerObj = getSpecificPlayer(playerNum)
-
+    if not playerObj or not generator then 
+        debugPrint("Oshibka: igrok ili generator ne naiden")
+        return 
+    end
+    
+    -- Проверяем, выключен ли генератор
+    if generator:isActivated() then
+        playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
+        debugPrint("Generator aktivirovan - sliv nevozmozhen")
+        return
+    end
+    
+    -- Проверяем, есть ли топливо
+    if generator:getFuel() <= 0 then
+        playerObj:Say(getText("IGUI_Propane_NoFuelToDrain"))
+        debugPrint("Generator pustoy")
+        return
+    end
+    
     -- Создаем действие
     local action = ISDrainFuelGenerator:new(playerObj, generator)
     ISTimedActionQueue.add(action)
@@ -633,7 +651,7 @@ function onAddPropaneToGenerator(worldObjects, generator, playerNum)
 
     -- Проверяем, выключен ли генератор
     if generator:isActivated() then
-        playerObj:Say("Snachala vykliuchite generator")
+        playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
         debugPrint("Generator aktivirovan - zapravka nevozmozhna")
         return
     end
@@ -641,7 +659,7 @@ function onAddPropaneToGenerator(worldObjects, generator, playerNum)
     -- Экипируем баллон
     local propaneTank = ensurePropaneTankInHands(playerObj)
     if not propaneTank then
-        playerObj:Say("Nuzhen propanovyi ballon")
+        playerObj:Say(getText("IGUI_Propane_NeedPropaneTank"))
         debugPrint("Ne udalos ekipirovat ballon")
         return
     end

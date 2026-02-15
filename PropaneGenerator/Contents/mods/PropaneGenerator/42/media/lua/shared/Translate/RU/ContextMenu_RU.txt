@@ -1,6 +1,7 @@
 ContextMenu_RU = {
-	ContextMenu_RefuelPropane = "Заправить пропаном",
-	ContextMenu_NoPropaneTank = "У меня нет баллона с пропаном",
-	ContextMenu_DrainFuel = "Слить топливо",
-
+    ContextMenu_RefuelPropane = "Заправить пропаном",
+    ContextMenu_DrainGasoline = "Слить бензин (нужен шланг)",
+    ContextMenu_DrainPropane = "Спустить газ",
+    ContextMenu_NoPropaneTank = "У меня нет баллона с пропаном",
+    ContextMenu_DrainFuel = "Слить топливо",  -- это можно удалить, если не используется
 }

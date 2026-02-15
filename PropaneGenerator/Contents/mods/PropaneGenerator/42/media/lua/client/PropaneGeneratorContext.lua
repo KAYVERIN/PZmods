@@ -70,34 +70,34 @@ end
 
 -- Функция для добавления опции "Заправить пропаном"
 local function addPropaneRefuelOption(context, generator, player)
-    local option = context:addOption("Zapravit' propanom", nil, onAddPropaneToGenerator, generator, player)
+    local option = context:addOption(getText("ContextMenu_RefuelPropane"), nil, onAddPropaneToGenerator, generator, player)
     local playerObj = getSpecificPlayer(player)
     local playerInv = playerObj:getInventory()
     
-    local tooltip = createPropaneAdvantagesTooltip("Zapravit' propanom")
+    local tooltip = createPropaneAdvantagesTooltip(getText("ContextMenu_RefuelPropane"))
     option.toolTip = tooltip
     
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
-        tooltip.description = "Ne mogu podoyti\n\n" .. tooltip.description
+        tooltip.description = getText("Tooltip_CannotReach") .. "\n\n" .. tooltip.description
         return option
     end
     
     if not playerInv:contains("Base.PropaneTank") then
         option.notAvailable = true
-        tooltip.description = "Nuzhen propanovyy ballon\n\n" .. tooltip.description
+        tooltip.description = getText("Tooltip_NoPropaneTank") .. "\n\n" .. tooltip.description
         return option
     end
     
     if generator:getFuel() >= generator:getMaxFuel() then
         option.notAvailable = true
-        tooltip.description = "Generator polon\n\n" .. tooltip.description
+        tooltip.description = getText("Tooltip_GeneratorFull") .. "\n\n" .. tooltip.description
         return option
     end
     
     if generator:isActivated() then
         option.notAvailable = true
-        tooltip.description = "Snachala vyklyuchite generator\n\n" .. tooltip.description
+        tooltip.description = getText("Tooltip_GeneratorActive") .. "\n\n" .. tooltip.description
         return option
     end
     
@@ -132,16 +132,16 @@ local function addDrainGasolineOption(context, generator, player)
     local playerObj = getSpecificPlayer(player)
     if not playerObj then return end
     
-    local option = context:addOption("Slyt benzin (nuzhen shlang)", nil, function()
+    local option = context:addOption(getText("ContextMenu_DrainGasoline"), nil, function()
         if not playerObj then return end
         
         if generator:isActivated() then
-            playerObj:Say("Snachala vyklyuchite generator")
+            playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
             return
         end
         
         if not hasHoseInInventory(playerObj) then
-            playerObj:Say("Nuzhen shlang")
+            playerObj:Say(getText("IGUI_Propane_NeedHose"))
             return
         end
         
@@ -150,37 +150,37 @@ local function addDrainGasolineOption(context, generator, player)
     end)
     
     local tooltip = ISToolTip:new()
-    tooltip:setName("Slyt benzin")
+    tooltip:setName(getText("ContextMenu_DrainGasoline"))
     
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
-        tooltip.description = "Ne mogu podoyti k generatoru"
+        tooltip.description = getText("Tooltip_CannotReach")
         option.toolTip = tooltip
         return option
     end
     
     if generator:isActivated() then
         option.notAvailable = true
-        tooltip.description = "Generator vklyuchen - snachala vyklyuchite"
+        tooltip.description = getText("Tooltip_GeneratorActive")
         option.toolTip = tooltip
         return option
     end
     
     if generator:getFuel() <= 0 then
         option.notAvailable = true
-        tooltip.description = "V generatore net benzina"
+        tooltip.description = getText("Tooltip_NoFuelToDrain")
         option.toolTip = tooltip
         return option
     end
     
     if not hasHoseInInventory(playerObj) then
         option.notAvailable = true
-        tooltip.description = "Nuzhen shlang (GardenHose, RubberHose, PlasticHose)"
+        tooltip.description = getText("Tooltip_NeedHose")
         option.toolTip = tooltip
         return option
     end
     
-    tooltip.description = "Slivaet benzin na zemlyu. Shlang mozhet porvatsya (10% shans)."
+    tooltip.description = getText("Tooltip_DrainGasoline")
     option.toolTip = tooltip
     debugPrint("Opciya sliva benzina dobavlena")
     return option
@@ -191,11 +191,11 @@ local function addDrainPropaneOption(context, generator, player)
     local playerObj = getSpecificPlayer(player)
     if not playerObj then return end
     
-    local option = context:addOption("Spustit gaz", nil, function()
+    local option = context:addOption(getText("ContextMenu_DrainPropane"), nil, function()
         if not playerObj then return end
         
         if generator:isActivated() then
-            playerObj:Say("Snachala vyklyuchite generator")
+            playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
             return
         end
         
@@ -204,30 +204,30 @@ local function addDrainPropaneOption(context, generator, player)
     end)
     
     local tooltip = ISToolTip:new()
-    tooltip:setName("Spustit gaz")
+    tooltip:setName(getText("ContextMenu_DrainPropane"))
     
     if not luautils.walkAdj(playerObj, generator:getSquare()) then
         option.notAvailable = true
-        tooltip.description = "Ne mogu podoyti k generatoru"
+        tooltip.description = getText("Tooltip_CannotReach")
         option.toolTip = tooltip
         return option
     end
     
     if generator:isActivated() then
         option.notAvailable = true
-        tooltip.description = "Generator vklyuchen - snachala vyklyuchite"
+        tooltip.description = getText("Tooltip_GeneratorActive")
         option.toolTip = tooltip
         return option
     end
     
     if generator:getFuel() <= 0 then
         option.notAvailable = true
-        tooltip.description = "V generatore net gaza"
+        tooltip.description = getText("Tooltip_NoFuelToDrain")
         option.toolTip = tooltip
         return option
     end
     
-    tooltip.description = "Vypuskaet gaz v atmosferu."
+    tooltip.description = getText("Tooltip_DrainPropane")
     option.toolTip = tooltip
     debugPrint("Opciya spuska gaza dobavlena")
     return option
@@ -241,7 +241,7 @@ local function addDebugOption(context, generator, player)
         debugGeneratorProperties(generator, "kontekstnoe menyu")
         local playerObj = getSpecificPlayer(player)
         if playerObj then
-            playerObj:Say("Otladka generatora vypolnena, proverte console F11")
+            playerObj:Say(getText("IGUI_Propane_DebugComplete"))
         end
     end)
     

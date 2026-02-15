@@ -1,0 +1,10 @@
+IGUI_RU = {
+    IGUI_Propane_TurnOffGenerator = "Сначала выключите генератор",
+    IGUI_Propane_NeedPropaneTank = "Нужен баллон с пропаном",
+    IGUI_Propane_NoPropaneTank = "У меня нет баллона с пропаном",
+    IGUI_Propane_GeneratorFull = "Генератор уже полностью заправлен",
+    IGUI_Propane_NoFuelToDrain = "В генераторе нет топлива",
+    IGUI_Propane_NeedHose = "Нужен шланг",
+    IGUI_Propane_HoseBroke = "Шланг порвался!",
+    IGUI_Propane_DebugComplete = "Отладка генератора выполнена, проверьте консоль F11",
+}

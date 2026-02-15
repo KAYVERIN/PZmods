@@ -107,7 +107,7 @@ function ISDrainGasoline:complete()
     -- Шланг имеет шанс сломаться
     if ZombRand(10) == 0 then  -- 10% шанс
         debugPrint("Shlan porvalsya!")
-        self.character:Say("Shlan porvalsya!")
+        self.character:Say(getText("IGUI_Propane_HoseBroke"))
     end
     
     debugPrint(string.format("Slito %.1f edinic benzina na zemlyu", drainedFuel))

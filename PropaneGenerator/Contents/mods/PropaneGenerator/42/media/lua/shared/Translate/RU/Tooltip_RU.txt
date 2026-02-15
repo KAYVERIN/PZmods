@@ -1,7 +1,10 @@
 Tooltip_RU = {
-	Tooltip_CannotReach = "Вы не можете подойти к генератору",
-	Tooltip_NoPropaneTank = "У вас нет баллона с пропаном",
-	Tooltip_GeneratorFull = "Генератор уже полностью заправлен",
-	Tooltip_GeneratorActive = "Сначала выключите генератор",
-	Tooltip_NoFuelToDrain = "В генераторе нет топлива",
+    Tooltip_CannotReach = "Вы не можете подойти к генератору",
+    Tooltip_NoPropaneTank = "У вас нет баллона с пропаном",
+    Tooltip_GeneratorFull = "Генератор уже полностью заправлен",
+    Tooltip_GeneratorActive = "Сначала выключите генератор",
+    Tooltip_NoFuelToDrain = "В генераторе нет топлива",
+    Tooltip_DrainGasoline = "Сливает бензин на землю. Шланг может порваться (10% шанс).",
+    Tooltip_DrainPropane = "Выпускает газ в атмосферу.",
+    Tooltip_NeedHose = "Нужен шланг",
 }

@@ -1,7 +1,10 @@
 Tooltip_EN = {
-	Tooltip_CannotReach = "You can't reach the generator",
-	Tooltip_NoPropaneTank = "You don't have a propane tank",
-	Tooltip_GeneratorFull = "Generator is already full",
-	Tooltip_GeneratorActive = "Turn off the generator first",
-	Tooltip_NoFuelToDrain = "No fuel in the generator",
+    Tooltip_CannotReach = "You can't reach the generator",
+    Tooltip_NoPropaneTank = "You don't have a propane tank",
+    Tooltip_GeneratorFull = "Generator is already full",
+    Tooltip_GeneratorActive = "Turn off the generator first",
+    Tooltip_NoFuelToDrain = "No fuel in the generator",
+    Tooltip_DrainGasoline = "Drains gasoline onto the ground. Hose may break (10% chance).",
+    Tooltip_DrainPropane = "Releases propane gas into the atmosphere.",
+    Tooltip_NeedHose = "Need a hose",
 }
