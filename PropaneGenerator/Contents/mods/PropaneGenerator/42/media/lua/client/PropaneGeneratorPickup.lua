@@ -10,47 +10,55 @@ debugPrint("[PICKUP] ======== ZAGRUZKA MODULYA PICKUP ========")
 -- Создаем цепочку функций
 local completeChain = {}
 
+-- Спрайты для определения типа
+local PROPANE_SPRITE = "appliances_misc_01_5"
+local GASOLINE_SPRITES = {
+    "appliances_misc_01_4",
+    "appliances_misc_01_6",
+    "appliances_misc_01_7"
+}
+
+-- Функция определения типа по спрайту
+local function getGeneratorTypeBySprite(generator)
+    if not generator then return nil end
+    local sprite = generator:getSprite()
+    if not sprite then return nil end
+    local spriteName = sprite:getName()
+    
+    if spriteName == PROPANE_SPRITE then
+        return "PROPANE"
+    end
+    
+    for _, s in ipairs(GASOLINE_SPRITES) do
+        if spriteName == s then
+            return "GASOLINE"
+        end
+    end
+    
+    return nil
+end
+
 -- Добавляем нашу функцию в цепочку
 table.insert(completeChain, function(self)
     debugPrint("[PICKUP] Nasha logika (osnovnaya)")
     
     -- Проверяем, наш ли это генератор
-    local isOurGenerator = false
-    if self.generator then
-        local sprite = self.generator:getSprite()
-        if sprite then
-            local spriteName = sprite:getName()
-            local oldSprites = {
-                "appliances_misc_01_4", "appliances_misc_01_5",
-                "appliances_misc_01_6", "appliances_misc_01_7"
-            }
-            
-            for _, sprite in ipairs(oldSprites) do
-                if spriteName == sprite then
-                    isOurGenerator = true
-                    break
-                end
-            end
-        end
-    end
-    
-    -- Если не наш генератор - пропускаем
-    if not isOurGenerator then
+    local generatorType = getGeneratorTypeBySprite(self.generator)
+    if not generatorType then
         debugPrint("[PICKUP] Eto ne nash generator, propuskaem")
         return nil -- nil означает "не обработано"
     end
     
     debugPrint("[PICKUP] Eto nash generator, obrabatyvaem")
+    debugPrint("[PICKUP] Tip generatora: " .. generatorType)
     
     -- НАША ПОЛНАЯ ЛОГИКА
     forceDropHeavyItems(self.character)
     
-    -- Получаем данные
-    local mData = self.generator:getModData()
-    local isPropane = mData.isPropaneGenerator == true
-    local itemType = isPropane and "Base." .. GENERATOR_PROPANE or "Base." .. GENERATOR_OLD
+    -- Определяем тип предмета для создания
+    local itemType = (generatorType == "PROPANE") and "Base." .. GENERATOR_PROPANE or "Base." .. GENERATOR_OLD
     
-    debugPrint("[PICKUP] Sozdaem " .. (isPropane and "PROPANOVIY" or "BENZINOVIY") .. " generator: " .. itemType)
+    debugPrint("[PICKUP] Sozdaem " .. (generatorType == "PROPANE" and "PROPANOVIY" or "BENZINOVIY") .. " generator: " .. itemType)
     
     -- Создаем предмет
     local item = instanceItem(itemType)
@@ -66,11 +74,6 @@ table.insert(completeChain, function(self)
     item:setCondition(self.generator:getCondition())
     if self.generator:getFuel() > 0 then
         item:getModData()["fuel"] = self.generator:getFuel()
-    end
-    
-    -- Копируем весь modData
-    for k, v in pairs(mData) do
-        item:getModData()[k] = v
     end
     
     -- Помещаем в руки

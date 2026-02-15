@@ -7,7 +7,15 @@ local function debugPrint(message)
     print("[GEN_INFO] " .. tostring(message))
 end
 
-debugPrint("Загрузка модуля перехвата окна информации о генераторе")
+debugPrint("Zagruzka modulya perekhvata okna informacii o generatore")
+
+-- Спрайты для определения типа
+local PROPANE_SPRITE = "appliances_misc_01_5"
+local GASOLINE_SPRITES = {
+    "appliances_misc_01_4",
+    "appliances_misc_01_6",
+    "appliances_misc_01_7"
+}
 
 -- ====================================================================
 -- ФУНКЦИИ ДЛЯ ПОЛУЧЕНИЯ ПАРАМЕТРОВ ГЕНЕРАТОРА
@@ -29,10 +37,23 @@ local function getOldGeneratorStats()
     }
 end
 
-local function isPropaneGenerator(generator)
-    if not generator then return false end
-    local modData = generator:getModData()
-    return modData.isPropaneGenerator == true
+local function getGeneratorTypeBySprite(generator)
+    if not generator then return nil end
+    local sprite = generator:getSprite()
+    if not sprite then return nil end
+    local spriteName = sprite:getName()
+    
+    if spriteName == PROPANE_SPRITE then
+        return "PROPANE"
+    end
+    
+    for _, s in ipairs(GASOLINE_SPRITES) do
+        if spriteName == s then
+            return "GASOLINE"
+        end
+    end
+    
+    return nil
 end
 
 -- ====================================================================
@@ -64,38 +85,13 @@ function ISGeneratorInfoWindow.getRichText(object, displayStats)
         return baseText
     end
     
-    -- Проверяем, генератор ли это
-    local isGenerator = false
-    if object.getSprite then
-        local sprite = object:getSprite()
-        if sprite then
-            local spriteName = sprite:getName()
-            local generatorSprites = {
-                "appliances_misc_01_4", "appliances_misc_01_5",
-                "appliances_misc_01_6", "appliances_misc_01_7"
-            }
-            for _, s in ipairs(generatorSprites) do
-                if spriteName == s then
-                    isGenerator = true
-                    break
-                end
-            end
-        end
-    end
-    
-    if not isGenerator then
+    -- Определяем тип генератора по спрайту
+    local generatorType = getGeneratorTypeBySprite(object)
+    if not generatorType then
         return baseText
     end
     
-    -- Безопасно получаем тип
-    local isPropane = false
-    local success, result = pcall(function()
-        return isPropaneGenerator(object)
-    end)
-    if success then
-        isPropane = result
-    end
-    
+    local isPropane = (generatorType == "PROPANE")
     local stats = isPropane and getPropaneGeneratorStats() or getOldGeneratorStats()
     
     -- Безопасно получаем значения
@@ -159,22 +155,18 @@ function ISGeneratorInfoWindow:setObject(object)
     
     -- Обновляем имя
     if self.panel then
-        local isPropane = false
-        local success, result = pcall(function()
-            return isPropaneGenerator(object)
-        end)
-        if success then
-            isPropane = result
+        local generatorType = getGeneratorTypeBySprite(object)
+        if generatorType then
+            local isPropane = (generatorType == "PROPANE")
+            local stats = isPropane and getPropaneGeneratorStats() or getOldGeneratorStats()
+            self.panel:setName(stats.name)
         end
-        
-        local stats = isPropane and getPropaneGeneratorStats() or getOldGeneratorStats()
-        self.panel:setName(stats.name)
     end
 end
 
-debugPrint("Модуль перехвата окна информации о генераторе загружен")
+debugPrint("Modul perekhvata okna informacii o generatore zagruzhen")
 
--- Инициализация
+-- Inicializaciya
 Events.OnGameStart.Add(function()
-    debugPrint("Перехват окна информации активирован")
+    debugPrint("Perekhvat okna informacii aktivirovan")
 end)
