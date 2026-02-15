@@ -4,7 +4,9 @@
 -- ====================================================================
 
 local function debugPrint(message)
-    print("[GEN_INFO] " .. tostring(message))
+    if ENABLE_DEBUG_PRINTS then
+        print("[GEN_INFO] " .. tostring(message))
+    end
 end
 
 debugPrint("Zagruzka modulya perekhvata okna informacii o generatore")
@@ -23,7 +25,7 @@ local GASOLINE_SPRITES = {
 
 local function getPropaneGeneratorStats()
     return {
-        name = "Propanovyi generator",
+        name = getText("Tooltip_Generator_PropaneName"),
         conditionChance = 40,
         soundRadius = 15
     }
@@ -31,7 +33,7 @@ end
 
 local function getOldGeneratorStats()
     return {
-        name = "Benzinovyi generator",
+        name = getText("Tooltip_Generator_GasolineName"),
         conditionChance = 25,
         soundRadius = 25
     }
@@ -110,9 +112,9 @@ function ISGeneratorInfoWindow.getRichText(object, displayStats)
     -- Формируем текст
     local text = getText("IGUI_Generator_FuelAmount", fuel) .. " <LINE> "
     text = text .. getText("IGUI_Generator_Condition", condition) .. " <LINE> "
-    text = text .. "Tip: " .. stats.name .. " <LINE> "
-    text = text .. "Nadezhnost': 1/" .. stats.conditionChance .. " <LINE> "
-    text = text .. "Shum: radius " .. stats.soundRadius .. " <LINE> "
+    text = text .. getText("Tooltip_Generator_Type") .. " " .. stats.name .. " <LINE> "
+    text = text .. getText("Tooltip_Generator_Reliability") .. stats.conditionChance .. " <LINE> "
+    text = text .. getText("Tooltip_Generator_Noise") .. " " .. stats.soundRadius .. " <LINE> "
     
     if object:isActivated() then
         text = text .. " <LINE> " .. getText("IGUI_PowerConsumption") .. ": <LINE> "

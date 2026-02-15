@@ -19,28 +19,6 @@ end
 -- ФУНКЦИИ ДЛЯ ПРОВЕРКИ ГЕНЕРАТОРА
 -- ====================================================================
 
--- Все спрайты старых генераторов (и бензин, и пропан)
-local OLD_GENERATOR_SPRITES = {
-    "appliances_misc_01_4",
-    "appliances_misc_01_5",
-    "appliances_misc_01_6",
-    "appliances_misc_01_7"
-}
-
--- Проверка, является ли объект старым генератором (ЛЮБЫМ)
-local function isOldGenerator(generator)
-    if not generator then return false end
-    local sprite = generator:getSprite()
-    if not sprite then return false end
-    local spriteName = sprite:getName()
-
-    for _, sprite in ipairs(OLD_GENERATOR_SPRITES) do
-        if spriteName == sprite then
-            return true
-        end
-    end
-    return false
-end
 
 -- Проверка, является ли генератор пропановым (для отладки)
 local function isPropaneGenerator(generator)
@@ -60,13 +38,14 @@ local function createPropaneAdvantagesTooltip(optionText)
     tooltip:setName(optionText)
     tooltip.description = string.format(
         "%s\n\n%s\n%s",
-        "Preimushchestva propanovogo generatora:",
-        "-40% radius shuma (tihaya rabota)",
-        "+60% nadezhnost' (rezhe lomaetsya)"
+        getText("Tooltip_PropaneAdvantages_Title"),
+        getText("Tooltip_PropaneAdvantages_Noise"),
+        getText("Tooltip_PropaneAdvantages_Reliability")
     )
-    tooltip:setTexture("media/textures/PropaneTank.png")
+    tooltip:setTexture("Item_PropaneTank")
     return tooltip
 end
+
 
 -- Функция для добавления опции "Заправить пропаном"
 local function addPropaneRefuelOption(context, generator, player)
@@ -136,12 +115,12 @@ local function addDrainGasolineOption(context, generator, player)
         if not playerObj then return end
         
         if generator:isActivated() then
-            playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
+            playerObj:Say(getText("Tooltip_GeneratorActive"))
             return
         end
         
         if not hasHoseInInventory(playerObj) then
-            playerObj:Say(getText("IGUI_Propane_NeedHose"))
+            playerObj:Say(getText("Tooltip_NeedHose"))
             return
         end
         
@@ -175,7 +154,7 @@ local function addDrainGasolineOption(context, generator, player)
     
     if not hasHoseInInventory(playerObj) then
         option.notAvailable = true
-        tooltip.description = getText("Tooltip_NeedHose")
+        tooltip.description = getText("Tooltip_NeedHose_Desc")
         option.toolTip = tooltip
         return option
     end
@@ -195,7 +174,7 @@ local function addDrainPropaneOption(context, generator, player)
         if not playerObj then return end
         
         if generator:isActivated() then
-            playerObj:Say(getText("IGUI_Propane_TurnOffGenerator"))
+            playerObj:Say(getText("Tooltip_GeneratorActive"))
             return
         end
         
@@ -246,8 +225,8 @@ local function addDebugOption(context, generator, player)
     end)
     
     local tooltip = ISToolTip:new()
-    tooltip:setName("🔧 OTLADKA GENERATORA")
-    tooltip.description = "Pokazat v console vse parametry generatora\n(Nazhmite F11 chtoby otkryt console)"
+    tooltip:setName(getText("Tooltip_Debug_Title"))
+    tooltip.description = getText("Tooltip_Debug_Desc")
     option.toolTip = tooltip
     
     return option
@@ -265,10 +244,10 @@ local function onFillWorldObjectContextMenu(player, context, worldobjects)
     local generator = nil
     for i = 1, #worldobjects do
         local obj = worldobjects[i]
-        if isOldGenerator(obj) then
-            generator = obj
-            break
-        end
+		if PropaneGenerator.isOldGenerator(obj) then
+			generator = obj
+			break
+		end
     end
     
     if not generator then

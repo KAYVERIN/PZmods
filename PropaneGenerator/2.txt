@@ -1,0 +1,70 @@
+🔧 Propane Generator
+
+Gives old generators a second life! Refuel them with propane to make them quieter and more reliable. Perfect for creating stealth bases in the city.
+
+
+📖 About the Mod
+
+
+The Problem
+
+The game has old generators. They are too loud and break down quickly. Usually, players don't even pick them up — it's easier to find a regular generator or do without electricity. But what if these rare finds could get a second chance?
+
+
+The Solution
+
+The mod adds the ability to refuel old generators with propane — a rare resource that you need to search for. Propane makes the generator fundamentally different:
+
+Regular old generator (on gasoline):
+🗣️ Loud — attracts zombies
+🔧 Unreliable — breaks down quickly
+
+Propane generator (on propane):
+🤫 40% quieter — less noise, fewer zombies
+💪 60% more reliable — breaks down 1.6 times less often
+🏠 Can be hidden in a small shed — noise will only be heard within 7-8 tiles
+
+
+🎮 Gameplay
+
+Propane must be found — tanks can be found in grills, garages, and gas stations
+Rare resource — 3-4 tanks will last a long time
+The choice is yours — spend scarce propane on a quiet generator or use regular gasoline
+
+
+⚡ Tactical Advantage
+
+The propane generator allows you to do what was almost impossible before:
+
+✅ Quiet city base — you can live right in the center without attracting hordes
+✅ Mini-shed — if you surround the generator with walls, the noise radius drops to 7-8 tiles
+✅ Less maintenance — the generator breaks down less often, saving electronics for repairs
+
+
+🕹️ How It Works
+
+1. Find an old generator (they exist on the map, but many ignore them)
+2. Get a propane tank (look in grills, garages, hardware stores)
+3. Approach the turned-off generator → RMB → "Refuel with Propane"
+4. The generator receives improved characteristics
+
+
+🔧 Compatibility
+
+✅ Build 42.13.1+
+✅ Single player
+🔄 Multiplayer — technically should work, but not fully tested. Report bugs!
+
+
+🌐 Languages
+
+English
+Russian
+
+
+💡 Why This Mod
+
+Old generators are rare but useless. Now they can become your secret weapon for a quiet life in the city.
+
+Before: found an old generator → threw it away/ignored it.
+Now: found an old generator + found propane → built a quiet base in the city center.

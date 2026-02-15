@@ -1,0 +1,7 @@
+Sandbox_RU = {
+    Sandbox_PropaneGenerator = "Пропановый генератор",
+    Sandbox_PropaneGenerator_debugPrints = "Включить отладочные сообщения",
+    Sandbox_PropaneGenerator_debugPrints_tooltip = "Показывать отладочные сообщения в консоли (F11).",
+    Sandbox_PropaneGenerator_fuelPerFullTank = "Топлива за полный баллон",
+    Sandbox_PropaneGenerator_fuelPerFullTank_tooltip = "Сколько единиц топлива дает один полный пропановый баллон. (По умолчанию: 50)",
+}

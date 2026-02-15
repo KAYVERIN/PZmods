@@ -331,7 +331,7 @@ module Base
 
 		outputs
 		{
-			item 1 Base.Generator,
+			item 1 Base.Generator_Old,
 		}
 	}
 /* воронка */

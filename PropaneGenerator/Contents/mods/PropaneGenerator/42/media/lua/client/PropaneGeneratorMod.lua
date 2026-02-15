@@ -7,13 +7,16 @@ require "PG_DrainFuel"
 -- ====================================================================
 -- РАЗДЕЛ 1: НАСТРОЙКИ МОДА
 -- ====================================================================
-
+PropaneGeneratorConfig = {
+    debugPrints = false,
+    fuelPerFullTank = 50,
+}
 -- Включить отладочные сообщения (true) или выключить (false)
-ENABLE_DEBUG_PRINTS = true
+ENABLE_DEBUG_PRINTS = PropaneGeneratorConfig.debugPrints
 
 -- Эффективность пропанового баллона:
 -- Сколько единиц топлива генератора дает один ПОЛНЫЙ баллон пропана?
-FUEL_PER_FULL_TANK = 50
+FUEL_PER_FULL_TANK = PropaneGeneratorConfig.fuelPerFullTank
 
 -- Пороговые значения для смены типа генератора (в десятичных дробях):
 -- Если в генераторе БОЛЬШЕ ИЛИ РАВНО 70% пропана - становится пропановым
@@ -26,6 +29,33 @@ EMPTY_TANK_THRESHOLD = 0.001
 -- Названия типов предметов (должны совпадать с items.txt)
 GENERATOR_OLD = "Generator_Old"
 GENERATOR_PROPANE = "Generator_Old_Propane"
+
+-- Функция обновления настроек из Sandbox
+local function updateConfigFromSandbox()
+    if not SandboxVars or not SandboxVars.PropaneGenerator then
+        print("[PROPAN_MOD] Sandbox settings not found, using defaults")
+        return
+    end
+
+    local sandbox = SandboxVars.PropaneGenerator
+    
+    -- debugPrints
+    if sandbox.debugPrints ~= nil then
+        PropaneGeneratorConfig.debugPrints = sandbox.debugPrints
+        ENABLE_DEBUG_PRINTS = sandbox.debugPrints  -- обновляем глобальную переменную
+        print("[PROPAN_MOD] Applied debugPrints = " .. tostring(ENABLE_DEBUG_PRINTS))
+    end
+    
+    -- fuelPerFullTank
+    if sandbox.fuelPerFullTank ~= nil then
+        PropaneGeneratorConfig.fuelPerFullTank = sandbox.fuelPerFullTank
+        FUEL_PER_FULL_TANK = sandbox.fuelPerFullTank  -- обновляем глобальную переменную
+        print("[PROPAN_MOD] Applied fuelPerFullTank = " .. tostring(FUEL_PER_FULL_TANK))
+    end
+end
+
+-- Вызываем при старте игры
+Events.OnGameStart.Add(updateConfigFromSandbox)
 
 -- ====================================================================
 -- РАЗДЕЛ 2: ФУНКЦИИ ОТЛАДКИ
@@ -233,10 +263,29 @@ end
 
 require "TimedActions/ISBaseTimedAction"
 
--- Проверка, является ли генератор старым (бензиновым)
+-- Все спрайты старых генераторов (и бензин, и пропан)
+local OLD_GENERATOR_SPRITES = {
+    "appliances_misc_01_4",
+    "appliances_misc_01_5",
+    "appliances_misc_01_6",
+    "appliances_misc_01_7"
+}
+
+-- Проверка, является ли объект старым генератором (ЛЮБЫМ)
 local function isOldGenerator(generator)
-    return not PropaneGenerator.isPropaneGenerator(generator)
+    if not generator then return false end
+    local sprite = generator:getSprite()
+    if not sprite then return false end
+    local spriteName = sprite:getName()
+
+    for _, sprite in ipairs(OLD_GENERATOR_SPRITES) do
+        if spriteName == sprite then
+            return true
+        end
+    end
+    return false
 end
+PropaneGenerator.isOldGenerator = isOldGenerator
 
 -- Функция для автоматической экипировки пропанового баллона
 local function ensurePropaneTankInHands(character)
@@ -612,7 +661,7 @@ end
 -- РАЗДЕЛ 7: ОБРАБОТЧИКИ КОНТЕКСТНОГО МЕНЮ
 -- ====================================================================
 
-onDrainFuel(worldObjects, generator, playerNum)
+function onDrainFuel(worldObjects, generator, playerNum)
     debugPrint("Sliv topliva iz generatora")
     local playerObj = getSpecificPlayer(playerNum)
     if not playerObj or not generator then 
