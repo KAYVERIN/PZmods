@@ -1,0 +1,10 @@
+IGUI_EN = {
+    IGUI_Propane_TurnOffGenerator = "Turn off the generator first",
+    IGUI_Propane_NeedPropaneTank = "I need a propane tank",
+    IGUI_Propane_NoPropaneTank = "I don't have a propane tank",
+    IGUI_Propane_GeneratorFull = "Generator is already full",
+    IGUI_Propane_NoFuelToDrain = "No fuel in the generator",
+    IGUI_Propane_NeedHose = "I need a hose",
+    IGUI_Propane_HoseBroke = "The hose broke!",
+    IGUI_Propane_DebugComplete = "Generator debug completed, check F11 console",
+}

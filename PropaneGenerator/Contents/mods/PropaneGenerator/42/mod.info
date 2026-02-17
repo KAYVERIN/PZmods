@@ -1,6 +1,6 @@
 name=Propane Generator
-id=PropaneGenerator
-description=Adds a propane-fueled generator
+id=PropaneGeneratorEQ
+description= Propane Generator — дает вторую жизнь старым генераторам! Заправляйте их пропаном, чтобы они стали тише и надежнее. Идеально для создания скрытных баз в городе.
 versionMin=42.13.1
 modversion=1.0
-icon=104359.png
+icon=118809.png

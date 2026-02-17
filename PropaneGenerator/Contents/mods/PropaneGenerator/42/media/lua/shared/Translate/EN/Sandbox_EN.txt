@@ -1,0 +1,7 @@
+Sandbox_EN = {
+    Sandbox_PropaneGenerator = "Propane Generator",
+    Sandbox_PropaneGenerator_debugPrints = "Enable Debug Prints",
+    Sandbox_PropaneGenerator_debugPrints_tooltip = "Show debug messages in console (F11).",
+    Sandbox_PropaneGenerator_fuelPerFullTank = "Fuel per Full Propane Tank",
+    Sandbox_PropaneGenerator_fuelPerFullTank_tooltip = "How many fuel units one full propane tank provides. (Default: 50)",
+}

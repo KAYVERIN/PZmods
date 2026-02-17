@@ -1,0 +1,3 @@
+ItemName_RU = {
+  ItemName_Base.Generator_Old_Propane = "Генератор на пропане",
+}
