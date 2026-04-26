@@ -1,0 +1,22 @@
+[object]
+defensetowerstone=Оборонная башня (Каменная)
+defensetowerfire=Оборонная башня (Огненная)
+defensetowerpoison=Оборонная башня (Ядовитая)
+defensetowercannonball=Оборонная башня (Пушечная)
+defensetowerstone_boss=Оборонная башня (Каменная)
+defensetowerfire_boss=Оборонная башня (Огненная)
+defensetowerpoison_boss=Оборонная башня (Ядовитая)
+
+[itemtooltip]
+defensetowertip=Башня, помогающая защищать вашу базу! (а также маяк)
+defensetowertargetboss=§9Эта башня нацелена на боссов
+
+[defensetower]
+attackstats=Урон: <damage>
+attacktype=Тип урона: <type>
+attackspeed=Скорость атаки: <speed>/сек
+rangestats=Дальность атаки: <range> клеток
+pressshift=Нажмите [input=invquickmove], чтобы увидеть больше деталей
+
+[mob]
+defensetowerattacker=Оборонная башня
