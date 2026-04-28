@@ -1,0 +1,213 @@
+[item]
+Exp=Опыт
+
+[itemtooltip]
+Exptip=Сущность жизни, поглощённая у побеждённых врагов.
+
+[ui]
+rpgskills_mod_name=RPG Навыки
+rpgskills_toggle_status=Открыть/закрыть окно RPG Навыков
+rpgskills_close=Закрыть
+
+rpgskills_status_tab=Статус
+rpgskills_classes_tab=Классы
+rpgskills_status_panel=Панель статуса
+rpgskills_classes_panel=Панель классов
+rpgskills_passives_actives_tab=Пассивные и Активные
+rpgskills_passives_actives_panel=Панель пассивных и активных
+rpgskills_passives_actives_passive_section=Пассивные
+rpgskills_passives_actives_vein_title=Жильный Шахтёр
+rpgskills_passives_actives_vein_description=Эксклюзивный пассивный навык класса Хранителя Руин: когда вы добываете только рудные блоки, остальные блоки в той же жиле также добываются автоматически.
+rpgskills_passives_actives_vein_unlock=Открывается автоматически на 1 уровне класса Хранителя Руин.
+rpgskills_passives_actives_combat_master_title=Бог Урона
+rpgskills_passives_actives_combat_master_description=Эксклюзивный пассивный навык классов Мастера Войны, Мастера Дальнего Боя, Мастера Магии и Мастера Призыва: когда все четыре класса имеют одинаковый уровень, даёт +3% общего урона за каждый синхронизированный уровень, от +3% на 1 уровне до +30% на 10 уровне.
+rpgskills_passives_actives_combat_master_unlock=Открывается автоматически, когда все четыре класса достигают 1 уровня.
+rpgskills_passives_actives_enchant_scroll_title=Бессмертный Писец
+rpgskills_passives_actives_enchant_scroll_description=Эксклюзивный пассивный навык класса Мастера Магии: при достижении 1 уровня класса свитки зачарования больше не расходуются при использовании.
+rpgskills_passives_actives_enchant_scroll_unlock=Открывается автоматически на 1 уровне класса Мастера Магии.
+rpgskills_passives_actives_active_section=Активные
+rpgskills_passives_actives_trinket_title=Тёмное Руинище
+rpgskills_passives_actives_trinket_description=Эксклюзивный пассивный навык класса Мастера Реликвий: при достижении 1 уровня класса Тёмное Руинище автоматически излучает 200 единиц света.
+rpgskills_passives_actives_trinket_unlock=Открывается автоматически на 1 уровне класса Мастера Реликвий.
+rpgskills_passives_actives_gold_on_hit_title=Золотой Удар
+rpgskills_passives_actives_gold_on_hit_description=Эксклюзивный пассивный навык класса Мастера Реликвий: при достижении 10 уровня класса Золотой Удар даёт +1 золото за удар.
+rpgskills_passives_actives_gold_on_hit_unlock=Открывается автоматически на 10 уровне класса Мастера Реликвий.
+rpgskills_passives_actives_coming_soon=В разработке.
+
+rpgskills_profile_unavailable=Профиль не загружен.
+rpgskills_player_name=Имя игрока
+rpgskills_player_level=Уровень игрока
+rpgskills_xp_current_needed=Текущий опыт / Требуется опыта
+rpgskills_level_max=Макс. уровень
+rpgskills_experience_text={0} XP
+rpgskills_level_up_text=Уровень повышен!
+
+rpgskills_free_class_points=Очки навыков
+rpgskills_class_points=Очки
+rpgskills_required_level=Требуемый уровень
+rpgskills_status_label=Статус
+rpgskills_status_locked=Заблокировано
+rpgskills_status_unlocked=Разблокировано
+rpgskills_add_point=Добавить 1 очко
+rpgskills_action_available=Действие доступно.
+rpgskills_no_class_points=Нет свободных очков для распределения.
+rpgskills_class_gate_locked=Заблокировано
+rpgskills_class_max_reached=Класс достиг максимального уровня.
+
+rpgskills_active_bonuses=Активные бонусы
+rpgskills_no_bonuses=Нет активных бонусов.
+
+rpgskills_reset_points_action=Сбросить очки
+rpgskills_reset_points_action_tooltip=Возвращает вложенные очки и возвращает свободные очки без изменения уровня.
+rpgskills_respec_cost=Стоимость сброса
+rpgskills_start_from_zero_action=Начать с нуля
+rpgskills_start_from_zero_action_tooltip=Сбрасывает уровень, опыт и очки.
+rpgskills_action_confirm=Подтвердить
+rpgskills_action_confirm_tooltip=Введите /confirmar в чате для подтверждения.
+rpgskills_confirm_reset_prompt=Введите /confirmar в чате для подтверждения.
+rpgskills_confirm_reset_requires_player=Эта команда может использоваться только игроком в игре.
+rpgskills_confirm_reset_no_pending=Нет ожидающих подтверждений. Сначала нажмите кнопку сброса.
+rpgskills_confirm_reset_profile_missing=Профиль игрока не найден.
+rpgskills_confirm_reset_failed=Не удалось подтвердить сброс.
+rpgskills_confirm_reset_success=Подтверждение выполнено.
+rpgskills_start_from_zero_free=Бесплатно
+rpgskills_coins=монет
+rpgskills_reset_all_action=Полный сброс
+rpgskills_reset_all_action_tooltip=Сбрасывает уровень, опыт и все распределённые очки.
+rpgskills_reset_points_tooltip=Сбрасывает только вложенные очки и возвращает свободные очки.
+rpgskills_reset_all_tooltip=Полный сброс прогресса: уровень, опыт и распределение очков.
+
+rpgskills_max_skills_action=Макс. навыки
+rpgskills_max_skills_action_tooltip=Автоматически распределяет очки классов до доступного лимита.
+
+rpgskills_class_tooltip_curve_title=Масштабирование бонусов от атрибутов
+rpgskills_class_tooltip_curve_values=Изменяется в зависимости от бонуса: от +1% до +10%, от +3% до +30%, от +10 до +100, от +1 до +10 и от +1 до +12
+rpgskills_class_tooltip_gains=Получаемые бонусы за очко класса
+
+# Атрибуты (подсказки для бонусов)
+rpgskills_attr_level=Уровень
+rpgskills_attr_damage_total=Общий урон
+rpgskills_attr_damage_melee=Урон в ближнем бою
+rpgskills_attr_damage_ranged=Урон с дальнего боя
+rpgskills_attr_damage_magic=Магический урон
+rpgskills_attr_damage_summon=Урон призыва
+rpgskills_attr_damage_corrosion=Урон кровотечением
+rpgskills_attr_damage_elemental_bonus=Бонус стихийного урона
+rpgskills_attr_damage_lifesteal=Поглощение здоровья
+rpgskills_attr_damage_burst_on_kill=Взрывной урон при убийстве
+rpgskills_attr_attack_speed=Скорость атаки
+rpgskills_attr_crit_chance=Шанс крит. удара
+rpgskills_attr_crit_damage=Крит. урон
+rpgskills_attr_armor_penetration=Бронепробиваемость
+rpgskills_attr_projectile_velocity=Скорость снарядов
+rpgskills_attr_reduced_bullet_usage=Снижение расхода пуль
+rpgskills_attr_reduced_arrow_usage=Снижение расхода стрел
+
+rpgskills_attr_survival_max_health=Макс. здоровье
+rpgskills_attr_survival_health_regen=Регенерация здоровья
+rpgskills_attr_survival_heal_per_second=Лечение в секунду
+rpgskills_attr_survival_fire_resistance=Сопротивление огню
+rpgskills_attr_survival_damage_reduction=Снижение урона
+rpgskills_attr_survival_armor_defense_gain=Получение брони/защиты
+rpgskills_attr_survival_knockback_resistance=Сопротивление отбрасыванию
+rpgskills_attr_survival_max_resilience=Макс. стойкость
+rpgskills_attr_survival_resilience_gain=Получение стойкости
+rpgskills_attr_survival_temporary_protection=Временная защита
+rpgskills_attr_survival_temporary_invulnerability=Временная неуязвимость
+rpgskills_attr_survival_fatal_survival=Выживание при смертельной атаке
+rpgskills_attr_survival_physical_resistance=Физическое сопротивление
+rpgskills_attr_survival_magical_resistance=Магическое сопротивление
+rpgskills_attr_survival_poison_resistance=Сопротивление яду
+rpgskills_attr_survival_ice_resistance=Сопротивление льду
+rpgskills_attr_survival_fire_damage_reduction=Снижение урона огнём
+rpgskills_attr_survival_critical_damage_reduction=Снижение критического урона
+rpgskills_attr_passive_health_on_food=Здоровье от еды
+rpgskills_attr_passive_health_on_kill=Здоровье за убийство
+
+rpgskills_attr_movement_speed=Скорость передвижения
+rpgskills_attr_movement_swim_speed=Скорость плавания
+rpgskills_attr_movement_out_of_combat_speed=Скорость вне боя
+rpgskills_attr_movement_dash_capacity=Количество рывков
+rpgskills_attr_movement_dash_cooldown=Перезарядка рывка
+rpgskills_attr_movement_sprint_bonus=Бонус спринта
+rpgskills_attr_movement_mobility_control=Контроль подвижности
+rpgskills_attr_movement_stamina_capacity=Запас выносливости
+rpgskills_attr_movement_stamina_usage=Расход выносливости
+
+rpgskills_attr_mysticism_summon_speed=Скорость призыва
+rpgskills_attr_mysticism_max_summons=Макс. призываемых
+rpgskills_attr_mysticism_summon_slots=Слоты призыва
+rpgskills_attr_mysticism_max_mana=Макс. мана
+rpgskills_attr_mysticism_mana_regen=Регенерация маны
+rpgskills_attr_mysticism_mana_usage=Расход маны
+rpgskills_attr_mysticism_magic_attack_speed_mana_link=Связь скорости маг. атаки с маной
+rpgskills_attr_mysticism_weapon_mana_efficiency=Эффективность маны оружия
+
+rpgskills_attr_bonus_max_trinkets=Макс. безделушек
+rpgskills_attr_bonus_interaction_range=Дальность взаимодействия
+rpgskills_attr_bonus_build_range=Дальность строительства
+rpgskills_attr_bonus_mining_range=Дальность добычи
+rpgskills_attr_bonus_building_speed=Скорость строительства
+rpgskills_attr_bonus_mining_speed=Скорость добычи
+rpgskills_attr_bonus_fishing_power=Сила рыбалки
+rpgskills_attr_bonus_fishing_lines=Доп. лески
+rpgskills_attr_bonus_loot_quality=Качество добычи
+rpgskills_attr_bonus_gold_find=Поиск золота
+rpgskills_attr_bonus_settlement_influence=Влияние на поселение
+rpgskills_attr_bonus_underground_visibility=Видимость под землёй
+rpgskills_attr_passive_gold_on_hit=Золотой Удар
+rpgskills_attr_bonus_gold_gain=Получение золота
+rpgskills_attr_bonus_loot_gain=Множитель добычи
+rpgskills_attr_passive_all_drop_chance_on_kill=Шанс полной добычи
+
+# Классы
+rpgskills_class_guerreiro_do_eclipse=Мастер Войны
+rpgskills_class_guerreiro_do_eclipse_desc=Класс ближнего боя. Каждое очко увеличивает урон в ближнем бою, критический урон, бронепробиваемость и скорость атаки.
+
+rpgskills_class_arqueiro_veloz=Мастер Дальнего Боя
+rpgskills_class_arqueiro_veloz_desc=Класс дальнего боя. Каждое очко увеличивает урон с дальнего боя, скорость снарядов, шанс критического удара и снижает расход стрел и пуль.
+
+rpgskills_class_arcanista_mistico=Мастер Магии
+rpgskills_class_arcanista_mistico_desc=Мистический класс. Каждое очко увеличивает магический урон, максимальную ману, регенерацию маны, снижает расход маны и улучшает скорость магической атаки, связанную с маной. На 1 уровне класса пассивный навык Бессмертный Писец предотвращает расходование свитков зачарования.
+
+rpgskills_class_sentinela_de_obsidiana=Мастер Сопротивления
+rpgskills_class_sentinela_de_obsidiana_desc=Защитный класс. Каждое очко увеличивает снижение урона, физическое, магическое, огненное, ядовитое и ледяное сопротивление, сопротивление отбрасыванию, получение брони и снижение урона огнём.
+
+rpgskills_class_vitalista_sangranto=Мастер Крови
+rpgskills_class_vitalista_sangranto_desc=Класс устойчивости. Каждое очко увеличивает поглощение здоровья, максимальное здоровье, регенерацию здоровья, лечение в секунду, лечение от еды, выживание при смертельной атаке и лечение за убийство.
+
+rpgskills_class_colosso_imortal=Мастер Колосс
+rpgskills_class_colosso_imortal_desc=Класс стойкости. Каждое очко увеличивает максимальную стойкость, получение стойкости, временную защиту и временную неуязвимость.
+
+rpgskills_class_andarilho_do_vento=Мастер Ветра
+rpgskills_class_andarilho_do_vento_desc=Класс мобильности. Каждое очко увеличивает скорость передвижения, количество рывков, перезарядку рывка, бонус спринта, контроль подвижности, максимальную выносливость и снижает расход выносливости.
+
+rpgskills_class_escavador_de_ruinas=Мастер Руин
+rpgskills_class_escavador_de_ruinas_desc=Прикладной класс. Каждое очко увеличивает скорость строительства, скорость добычи, дальность взаимодействия, дальность строительства, дальность добычи и видимость под землёй.
+
+rpgskills_class_marujo_da_mare=Мастер Приливов
+rpgskills_class_marujo_da_mare_desc=Водный класс. Каждое очко увеличивает силу рыбалки, дополнительные лески, влияние на поселение и скорость плавания.
+
+rpgskills_class_mestre_das_reliquias=Мастер Реликвий
+rpgskills_class_mestre_das_reliquias_desc=Класс сокровищ. Каждое очко увеличивает качество добычи, поиск золота (+1% за очко, до +10%), получение золота (+1% за очко, до +10%), шанс полной добычи при убийстве, шанс умножения конечного предмета и дополнительные слоты для безделушек (+1 за очко до 9 уровня; на 10 уровне даёт +3; итого +12). На 10 уровне класса пассивный навык Золотой Удар даёт +1 золото за удар.
+
+rpgskills_class_cacador_elemental=Мастер Стихий
+rpgskills_class_cacador_elemental_desc=Атакующий класс. Каждое очко увеличивает шанс наложения 1 случайного негативного эффекта при любой атаке (огонь, яд, мороз или кровотечение) с 10% на 1 уровне до 100% на 10 уровне. Каждый эффект длится от 0,15 до 2,00 секунд, плюс взрывной урон при убийстве и шанс казни.
+
+rpgskills_class_necromante_profano=Мастер Призыва
+rpgskills_class_necromante_profano_desc=Класс призыва. Каждое очко увеличивает урон призыва, скорость призыва и максимальное количество призванных существ.
+
+rpgskills_stacksize_usage=/rpgskills set stack <global|world> <1-1000>x
+rpgskills_stacksize_missing_multiplier=Укажите множитель от 1x до 1000x.
+rpgskills_stacksize_invalid_multiplier=Множитель должен быть от 1x до 1000x.
+rpgskills_stacksize_invalid_scope=Используйте global или world.
+rpgskills_stacksize_scope_global=глобальный
+rpgskills_stacksize_scope_world=мир
+rpgskills_stacksize_inherited=унаследовано
+rpgskills_stacksize_default_label=по умолчанию ({0}x)
+rpgskills_stacksize_summary=Эффективный множитель размера стопки: {0}x. Мир: {1}. Глобально: {2}.
+rpgskills_stacksize_scope_status=Множитель {0} размера стопки: {1}. Эффективный множитель: {2}x.
+rpgskills_stacksize_set_success=Множитель {0} размера стопки установлен на {1}x.
+rpgskills_stacksize_unset_success=Множитель {0} размера стопки сброшен.
+
+rpgskills_welcome_new_world=Большое спасибо за загрузку этого мода! Я чрезвычайно рад вашей поддержке. Чтобы мод оставался активным и постоянно улучшался, пожалуйста, отправляйте свои отзывы, комментарии и, конечно, сообщайте о любых ошибках, которые вы найдёте, чтобы я мог исправить их как можно быстрее. Поздравляю! Разблокирован бонус: Глобальный размер стопки обновлён до 100x!
